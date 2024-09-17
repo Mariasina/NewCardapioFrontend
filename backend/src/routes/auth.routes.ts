@@ -1,11 +1,13 @@
 import { Router } from "express";
-import { createAdmin, userLogin } from "../controllers/auth.controller";
+import { createAdmin, adminLogin } from "../controllers/auth.controller";
+import { validate } from "../middlewares/validation.middleware";
+import { createAdminSchema, userLoginSchema } from "../schemas/user.schemas";
 
 const authRoutes = Router()
 
-authRoutes.get("/createAdmin", createAdmin)
+authRoutes.post("/createAdmin", validate(createAdminSchema), createAdmin)
 
-authRoutes.post("/login", userLogin)
+authRoutes.post("/login", validate(userLoginSchema), adminLogin)
 
 
 export default authRoutes
