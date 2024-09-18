@@ -5,7 +5,14 @@ const routes = createBrowserRouter([
     {
         path: "/",
         element: <Home/>
+    },
+    {
+        path: "/login"
+    },
+    {
+        path: "/register"
     }
+
 ])
 
 export default routes
