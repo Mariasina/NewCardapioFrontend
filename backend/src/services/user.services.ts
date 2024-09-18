@@ -5,7 +5,7 @@ import jwt from "jsonwebtoken"
 import { IJwtPayload } from "../types/jwt.types"
 import { secretToken } from "../middlewares/auth.middleware"
 
-export const createUserService = async (username: string, password: string, isAdmin: true) => {
+export const createUserService = async (username: string, password: string, isAdmin: boolean) => {
     const userExists = await User.findOne({username})
 
     if (userExists)
