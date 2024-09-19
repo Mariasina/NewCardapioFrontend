@@ -7,7 +7,7 @@ import { AppError } from "../errors";
 export const createIngredientController = async(req: Request<{}, {}, createIngredientRequest>, res: Response<IMessageResponse>) => {
     const {name, hasGluten, isAnimal, isMeat} = req.body
 
-    const ingredient = await createIngredientService(name, hasGluten, isAnimal, isMeat)
+    const ingredient = await createIngredientService({name, hasGluten, isAnimal, isMeat})
 
     if (!ingredient)
         throw new AppError("Failed to create ingredient!", 400)

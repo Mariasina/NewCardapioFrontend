@@ -1,7 +1,7 @@
-import Ingredient from "../models/ingredient.model"
+import Ingredient, { IIngredient } from "../models/ingredient.model"
 
-export const createIngredientService = async (name: string, hasGluten: boolean, isAnimal: boolean, isMeat: boolean) => {
-    const ingredient = await Ingredient.create({ name, hasGluten, isAnimal, isMeat })
+export const createIngredientService = async (ingredient: IIngredient) => {
+    const newIngredient = await Ingredient.create(ingredient)
 
-    return ingredient
+    return newIngredient
 }
