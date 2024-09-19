@@ -6,6 +6,7 @@ import { verifyToken } from './middlewares/auth.middleware';
 import { AppError } from './errors';
 import authRoutes from './routes/auth.routes';
 import userRoutes from './routes/user.routes';
+import ingredientRoutes from './routes/ingredient.routes';
 
 const app = express();
 
@@ -21,6 +22,7 @@ app.use(verifyToken)
 
 //Authenticated routes
 app.use(userRoutes)
+app.use(ingredientRoutes)
 
 
 app.use(async (err: Error, req: Request, res: Response, next: NextFunction) => {
