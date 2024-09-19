@@ -1,6 +1,6 @@
 import { model, Schema } from "mongoose";
 
-export interface IIngredient {
+export type IIngredient = {
     name: string,
     hasGluten: boolean,
     isAnimal: boolean,
@@ -14,6 +14,6 @@ const ingredientSchema = new Schema<IIngredient>({
     isMeat: {type: Boolean, required: true}
 })
 
-const Ingredient = model<IIngredient>('Ingredient', ingredientSchema)
+const Ingredient = model<IIngredient>('Ingredients', ingredientSchema)
 
 export default Ingredient
