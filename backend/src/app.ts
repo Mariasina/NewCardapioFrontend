@@ -8,6 +8,8 @@ import authRoutes from './routes/auth.routes';
 import userRoutes from './routes/user.routes';
 import ingredientRoutes from './routes/ingredient.routes';
 import dishRoutes from './routes/dish.routes';
+import restaurantRoutes from './routes/restaurant.routes';
+import menuRoutes from './routes/menu.routes';
 
 const app = express();
 
@@ -25,7 +27,8 @@ app.use(verifyToken)
 app.use(userRoutes)
 app.use(ingredientRoutes)
 app.use(dishRoutes)
-
+app.use(restaurantRoutes)
+app.use(menuRoutes)
 
 app.use(async (err: Error, req: Request, res: Response, next: NextFunction) => {
     let status = 500

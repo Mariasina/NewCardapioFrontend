@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { createDishRequest } from "../schemas/dish.schema";
+import { createDishRequest } from "../schemas/dish.schemas";
 import { IMessageResponse } from "../dtos";
 import { createDishService } from "../services/dish.services";
 import { IIngredient } from "../models/ingredient.model";

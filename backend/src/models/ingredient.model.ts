@@ -8,7 +8,7 @@ export type IIngredient = {
 }
 
 const ingredientSchema = new Schema<IIngredient>({
-    name: {type: String, required: true},
+    name: {type: String, required: true, unique: true},
     hasGluten: {type: Boolean, required: true},
     isAnimal: {type: Boolean, required: true},
     isMeat: {type: Boolean, required: true}
