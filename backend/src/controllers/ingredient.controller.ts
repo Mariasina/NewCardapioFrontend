@@ -4,13 +4,13 @@ import { IMessageResponse } from "../dtos";
 import { createIngredientService } from "../services/ingredient.services";
 import { AppError } from "../errors";
 
-export const createIngredient = async(req: Request<{}, {}, createIngredientRequest>, res: Response<IMessageResponse>) => {
+export const createIngredientController = async(req: Request<{}, {}, createIngredientRequest>, res: Response<IMessageResponse>) => {
     const {name, hasGluten, isAnimal, isMeat} = req.body
 
     const ingredient = await createIngredientService(name, hasGluten, isAnimal, isMeat)
 
     if (!ingredient)
-        throw new AppError("Failed to create user!", 400)
+        throw new AppError("Failed to create ingredient!", 400)
 
     res.json({
         message: `Ingredient (${name}) was created!`
