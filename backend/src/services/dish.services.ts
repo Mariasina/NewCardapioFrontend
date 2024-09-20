@@ -1,6 +1,11 @@
 import { Dish, IDish } from "../models/dish.model";
 import Ingredient, { IIngredient } from "../models/ingredient.model";
 
+export const getDishService = async () => {
+    const dishes = await Dish.find()
+    return dishes
+}
+
 export const createDishService = async (name: string, ingredients: IIngredient[]) => {
     const ingredientList = await Promise.all(
         ingredients.map(async (x) => {

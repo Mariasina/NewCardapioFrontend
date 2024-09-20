@@ -1,9 +1,19 @@
 import { Request, Response } from "express";
 import { createDishRequest } from "../schemas/dish.schemas";
 import { IMessageResponse } from "../dtos";
-import { createDishService } from "../services/dish.services";
+import { createDishService, getDishService } from "../services/dish.services";
 import { IIngredient } from "../models/ingredient.model";
 import { IDish } from "../models/dish.model";
+import { DishListResponse } from "../dtos/dish.dto";
+
+export const getDishController = async (req: Request, res: Response<DishListResponse>) => {
+    const dishes = await getDishService()
+
+    res.json({
+        message: "Success fetching dishes!",
+        dishes
+    })
+}
 
 export const createDishController = async (req: Request<{}, {}, createDishRequest>, res: Response<IDish>) => {
     const {name, ingredients} = req.body
