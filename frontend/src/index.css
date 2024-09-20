@@ -1,6 +1,12 @@
 /*
   1. Use a more-intuitive box-sizing model.
 */
+
+:root {
+  --bg-primary: #115437;
+
+}
+
 *, *::before, *::after {
   box-sizing: border-box;
 }
