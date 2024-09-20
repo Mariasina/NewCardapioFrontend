@@ -2,6 +2,11 @@
   1. Use a more-intuitive box-sizing model.
 */
 
+@font-face {
+  font-family: 'Marcellus';
+  src: url('https://fonts.googleapis.com/css2?family=Marcellus&display=swap');
+}
+
 :root {
   --bg-primary: #115437;
 
