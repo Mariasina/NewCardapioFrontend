@@ -24,7 +24,13 @@ export default function Login() {
                         <Stack width={"100%"} gap={10} mt={15}  alignItems={"center"} >
                             <TextField
                                 label="Username"
-                                sx={{backgroundColor: "#ffffffe8"}}
+                                sx={{
+                                    backgroundColor: "#ffffffe8",
+                                    ".MuiFilledInput-root, &": {
+                                        borderTopRightRadius: "8px",
+                                        borderTopLeftRadius: "8px"
+                                    }
+                                }}
                                 variant="filled"
                                 fullWidth
                                  
@@ -32,7 +38,13 @@ export default function Login() {
                             <TextField
                                 label="Password"
                                 variant="filled"
-                                sx={{backgroundColor: "#ffffffe8"}}
+                                sx={{
+                                    backgroundColor: "#ffffffe8",
+                                    ".MuiFilledInput-root, &": {
+                                        borderTopRightRadius: "8px",
+                                        borderTopLeftRadius: "8px"
+                                    }
+                                }}
                                 fullWidth
                             />
                             <Button
