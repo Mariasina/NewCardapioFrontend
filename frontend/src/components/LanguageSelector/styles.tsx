@@ -17,4 +17,5 @@ export const ImgArrow = styled('span')`
 
 export const ImgFlag = styled('img')`
     width: 50%;
+    margin: 0 auto;
 `

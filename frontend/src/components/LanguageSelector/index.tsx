@@ -26,8 +26,8 @@ function LanguageSelector() {
                         ':after': { borderBottomColor: 'white' },
                     }}
                 >
-                    <MenuItem value={"en"}><ImgFlag src={flag} style={{margin: "0 auto"}}/></MenuItem>
-                    <MenuItem value={"br"}><ImgFlag src={flagBR} style={{margin: "0 auto"}}/></MenuItem>
+                    <MenuItem value={"en"}><ImgFlag src={flag}/></MenuItem>
+                    <MenuItem value={"br"}><ImgFlag src={flagBR}/></MenuItem>
                 </Select>
             </FormControl>
         </>

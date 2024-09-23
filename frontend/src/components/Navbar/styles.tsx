@@ -2,7 +2,7 @@ import { AppBar, Box, MenuItem} from "@mui/material";
 import styled from "styled-components";
 
 export const MenuLink = styled(MenuItem)`
-    font-family: 'Marcellus' !important;
+    font-family: "Marcellus" !important;
 `
 
 export const NavContainer = styled(AppBar)`
