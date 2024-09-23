@@ -7,6 +7,16 @@
   src: url('https://fonts.googleapis.com/css2?family=Marcellus&display=swap');
 }
 
+@font-face {
+  font-family: 'Marcellus SC';
+  src: url('https://fonts.googleapis.com/css2?family=Marcellus+SC&display=swap');
+}
+
+@font-face {
+  font-family: 'Margarine';
+  src: url('https://fonts.googleapis.com/css2?family=Marcellus+SC&family=Margarine&display=swap');
+}
+
 :root {
   --bg-primary: #115437;
 

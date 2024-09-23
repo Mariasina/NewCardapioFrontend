@@ -1,19 +1,12 @@
 import * as React from 'react';
-import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
 import IconButton from '@mui/material/IconButton';
-import Typography from '@mui/material/Typography';
 import Menu from '@mui/material/Menu';
 import MenuIcon from '@mui/icons-material/Menu';
-import Container from '@mui/material/Container';
-import Avatar from '@mui/material/Avatar';
-import Button from '@mui/material/Button';
-import Tooltip from '@mui/material/Tooltip';
-import MenuItem from '@mui/material/MenuItem';
-import AdbIcon from '@mui/icons-material/Adb';
-import { MenuLink } from './styles';
-import { MarcellusFont } from '../GlobalFonts';
+import { ImgLogo, ImgLogout, MenuLink, NavContainer, RightIcons, RightItens } from './styles';
+import logo from '../../assets/img/NewCardapio-logo.png';
+import LanguageSelector from '../LanguageSelector';
 
 function NavBar() {
     const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(null);
@@ -35,14 +28,13 @@ function NavBar() {
     };
 
     return (
-        <AppBar position="static">
-            <Container>
+        <NavContainer position="static">
+            <Box>
+                <ImgLogo src={logo}></ImgLogo>
+            </Box>
+            <RightItens>
                 <Toolbar disableGutters>
-
-                    LOGO
-
                     <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
-
                         <IconButton
                             aria-controls="menu-appbar"
                             aria-haspopup="true"
@@ -69,21 +61,15 @@ function NavBar() {
                             sx={{ display: { xs: 'block', md: 'none' } }}
                         >
                             <MenuLink>
-                                <MarcellusFont>
-                                    Home
-                                </MarcellusFont>
+                                Home
                             </MenuLink>
                             <MenuLink>
-                                <MarcellusFont>
-                                    Cardápios
-                                </MarcellusFont>
+                                Cardápios
                             </MenuLink>
                             <MenuLink>
                                 Usuários
                             </MenuLink>
                         </Menu>
-
-
                     </Box>
                     <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
                         <MenuLink>
@@ -97,8 +83,16 @@ function NavBar() {
                         </MenuLink>
                     </Box>
                 </Toolbar>
-            </Container>
-        </AppBar>
+                <RightIcons>
+                    <LanguageSelector />
+                    <MenuLink sx={{borderRadius: "50%", aspectRatio: "1/1"}}>
+                        <ImgLogout className="material-symbols-outlined">
+                            logout
+                        </ImgLogout>
+                    </MenuLink>
+                </RightIcons>
+            </RightItens>
+        </NavContainer>
     );
 }
 export default NavBar;
