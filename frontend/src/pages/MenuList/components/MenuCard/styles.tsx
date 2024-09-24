@@ -1,13 +1,13 @@
 import { Box, styled } from "@mui/material";
 
 export const CardBox = styled(Box)(({}) => ({
-    outline: "4px solid var(--bg-primary)",
+    outline: "6px solid var(--bg-primary)",
     width: "190px",
     aspectRatio: "5/3",
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
-    borderRadius: "20px",
+    borderRadius: "15px",
     margin: "auto 0",
     justifySelf: "center",
     transition: "300ms",

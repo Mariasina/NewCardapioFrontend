@@ -40,6 +40,7 @@ function RegisterUser() {
 
                             />
                             <TextField
+                            type="password"
                                 label="Password"
                                 variant="filled"
                                 sx={{
