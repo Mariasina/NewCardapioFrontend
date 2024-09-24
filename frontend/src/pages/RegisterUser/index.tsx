@@ -1,24 +1,23 @@
-import { Box, Button, Stack, TextField, Typography } from "@mui/material";
-import { GreenPanel, LoginImage } from "./styles";
-import LoginImg from "../../assets/img/loginImg.svg"
+import { Box, Button, Checkbox, FormControlLabel, Stack, TextField, Typography } from "@mui/material";
+import { MainPanel, PicturePanel, RegisterImg } from "./styles";
+import registerImg from "../../assets/img/register-user-img.png"
 
-export default function Login() {
+function RegisterUser() {
     return (
         <>
-            <Stack flexDirection={"row"} height={"100vh"}>
-                <GreenPanel>
+            <Stack flexDirection={"row"} minHeight={"100vh"}>
+                <MainPanel>
                     <Stack
                         height={"100%"}
                         width={"75%"}
                         my={5}
                         sx={{
-                            backgroundColor: "var(--bg-primary)",
                             padding: 5,
                             borderRadius: "20px",
                         }}
                         zIndex={10}
                     >
-                        <Typography fontFamily={"Marcellus SC"} variant="h2" color="white" mt={5} textAlign={"center"} zIndex={9}>Login</Typography>
+                        <Typography fontFamily={"Marcellus SC"} variant="h2" color="white" mt={5} textAlign={"center"} zIndex={9}>Criar novo usuário</Typography>
 
                         <Stack width={"100%"} gap={10} mt={15} alignItems={"center"} >
                             <TextField
@@ -41,7 +40,6 @@ export default function Login() {
 
                             />
                             <TextField
-                                type="password"
                                 label="Password"
                                 variant="filled"
                                 sx={{
@@ -59,6 +57,15 @@ export default function Login() {
                                 }}
                                 fullWidth
                             />
+                            <Box sx={{
+                                width: "100%",
+                                ".MuiCheckbox-root.Mui-checked": {
+                                    color: "var(--bg-primary)"
+                                }
+                            }}>
+                                <FormControlLabel control={<Checkbox />} label="Admin" sx={{ ".MuiTypography-root": { fontFamily: "Marcellus" } }} />
+                            </Box>
+
                             <Button
 
                                 variant="contained"
@@ -66,20 +73,23 @@ export default function Login() {
                                 sx={{
                                     maxWidth: "350px",
                                     padding: 3,
-                                    backgroundColor: "#CCA67F",
-                                    color: "var(--bg-primary)"
+                                    backgroundColor: "var(--bg-primary)",
+                                    color: "white"
                                 }}
                                 color="inherit"
                             >
-                                <Typography sx={{ textTransform: "capitalize" }} fontFamily={"Marcellus"} variant="h5" textAlign={"center"} >Login</Typography>
+                                <Typography sx={{ textTransform: "capitalize" }} fontFamily={"Marcellus"} variant="h5">Cadastrar</Typography>
                             </Button>
                         </Stack>
+
                     </Stack>
-                </GreenPanel>
-                <Box>
-                    <LoginImage src={LoginImg}></LoginImage>
-                </Box>
+                </MainPanel>
+                <PicturePanel>
+                    <RegisterImg src={registerImg}></RegisterImg>
+                </PicturePanel>
             </Stack>
         </>
     )
 }
+
+export default RegisterUser;
