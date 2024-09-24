@@ -1,4 +1,4 @@
-import { Box, Fab, Stack, Typography } from "@mui/material";
+import { Fab, Stack, Typography } from "@mui/material";
 import NavBar from "../../components/NavBar";
 import "./styles.css"
 import { CardContainer, ListTitleContainer } from "./styles";
