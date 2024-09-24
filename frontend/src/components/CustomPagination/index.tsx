@@ -4,8 +4,10 @@ function CustomPagination({pages}: {pages:number}) {
 
     return (
         <>
-            <Pagination count={pages} color="primary"
+            <Pagination count={pages} color="primary" 
                 sx={{
+                    position: "fixed",
+                    bottom: 10,
                     ".MuiPaginationItem-root": {
                         fontFamily: '"Marcellus" !important',
                     },

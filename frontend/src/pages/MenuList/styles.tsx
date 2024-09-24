@@ -17,7 +17,7 @@ export const ListTitleContainer = styled(Box)(({}) => ({
     "p::after": {
         content: '""',
         position: "absolute",
-        backgroundColor: "green",
+        backgroundColor: "var(--bg-primary)",
         width: "15%",
         height: "2px",
         transition: "400ms",
