@@ -4,6 +4,7 @@ import UserCard from "./components/UserCard";
 import AnimatedTitle from "../../components/AnimatedTitle";
 import { CardContainer } from "./styles";
 import CustomPagination from "../../components/CustomPagination";
+import { Link } from "react-router-dom";
 
 function UserList() {
     return (
@@ -20,16 +21,21 @@ function UserList() {
                         <AnimatedTitle title={"Registered Users"} />
                         <Stack flexDirection={"row"} alignItems={"center"} justifyContent={"center"} gap={2}>
                             <Typography fontFamily={"Marcellus"} fontSize={"1.1rem"}>Add new User</Typography>
-                            <Fab color="inherit" sx={{
-                                backgroundColor: "#CCA67F",
+                            <Link to={"/register-user"} style={{
+                                textDecoration: "none",
+                                color: "black"
+                            }}>
+                                <Fab color="inherit" sx={{
+                                    backgroundColor: "#CCA67F",
 
-                                ":hover": {
-                                    backgroundColor: "#dec4ab",
-                                }
+                                    ":hover": {
+                                        backgroundColor: "#dec4ab",
+                                    }
 
-                            }} aria-label="add">
-                                <span className="material-symbols-outlined">add</span>
-                            </Fab>
+                                }} aria-label="add">
+                                    <span className="material-symbols-outlined">add</span>
+                                </Fab>
+                            </Link>
                         </Stack>
                     </Stack>
                     <Stack alignItems={"center"} justifyContent={"center"}>

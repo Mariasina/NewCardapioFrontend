@@ -7,6 +7,7 @@ import MenuIcon from '@mui/icons-material/Menu';
 import { ImgLogo, ImgLogout, MenuLink, NavContainer, RightIcons, RightItens } from './styles';
 import logo from '../../assets/img/NewCardapio-logo.png';
 import LanguageSelector from '../LanguageSelector';
+import { Link } from 'react-router-dom';
 
 function NavBar() {
     const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(null);
@@ -61,38 +62,68 @@ function NavBar() {
                             sx={{ display: { xs: 'block', md: 'none' } }}
                         >
                             <MenuLink>
-                                Home
+                                <Link to={"/"} style={{
+                                    textDecoration: "none",
+                                    color: "black"
+                                }}>
+                                    Home
+                                </Link>
                             </MenuLink>
                             <MenuLink>
-                                Cardápios
+                                <Link to={"/menus"} style={{
+                                    textDecoration: "none",
+                                    color: "black"
+                                }}>
+                                    Cardápios
+                                </Link>
                             </MenuLink>
                             <MenuLink>
-                                Usuários
+                                <Link to={"/users"} style={{
+                                    textDecoration: "none",
+                                    color: "black"
+                                }}>
+                                    Usuários
+                                </Link>
                             </MenuLink>
                         </Menu>
                     </Box>
                     <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
                         <MenuLink>
-                            Home
+                            <Link to={"/"} style={{
+                                    textDecoration: "none",
+                                    color: "white"
+                                }}>
+                                Home
+                            </Link>
                         </MenuLink>
                         <MenuLink>
-                            Cardápios
+                            <Link to={"/menus"} style={{
+                                    textDecoration: "none",
+                                    color: "white"
+                                }}>
+                                Cardápios
+                            </Link>
                         </MenuLink>
                         <MenuLink>
-                            Usuários
+                            <Link to={"/users"} style={{
+                                    textDecoration: "none",
+                                    color: "white"
+                                }}>
+                                Usuários
+                            </Link>
                         </MenuLink>
                     </Box>
                 </Toolbar>
                 <RightIcons>
                     <LanguageSelector />
-                    <MenuLink sx={{borderRadius: "50%", aspectRatio: "1/1"}}>
+                    <MenuLink sx={{ borderRadius: "50%", aspectRatio: "1/1" }}>
                         <ImgLogout className="material-symbols-outlined">
                             logout
                         </ImgLogout>
                     </MenuLink>
                 </RightIcons>
             </RightItens>
-        </NavContainer>
+        </NavContainer >
     );
 }
 export default NavBar;
