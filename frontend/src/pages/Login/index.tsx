@@ -31,10 +31,7 @@ export default function Login() {
             localStorage.setItem("token", res.data.token)
             navigate("/")
         }
-        
-
     }
-
 
     return (
         <Stack flexDirection={"row"} height={"100vh"}>
@@ -95,10 +92,10 @@ export default function Login() {
                                 }}
                                 fullWidth
                                 value={password}
-                                onChange={(e) => setPassword(e.target.value)} // Adicionando onChange
+                                onChange={(e) => setPassword(e.target.value)} 
                             />
                             <Button
-                                type="submit" // Mudando para type="submit"
+                                type="submit" 
                                 variant="contained"
                                 fullWidth
                                 sx={{

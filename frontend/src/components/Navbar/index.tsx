@@ -7,26 +7,25 @@ import MenuIcon from '@mui/icons-material/Menu';
 import { ImgLogo, ImgLogout, MenuLink, NavContainer, RightIcons, RightItens } from './styles';
 import logo from '../../assets/img/NewCardapio-logo.png';
 import LanguageSelector from '../LanguageSelector';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 function NavBar() {
+    const navigate = useNavigate()
+
     const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(null);
-    const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null);
 
     const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
         setAnchorElNav(event.currentTarget);
-    };
-    const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
-        setAnchorElUser(event.currentTarget);
     };
 
     const handleCloseNavMenu = () => {
         setAnchorElNav(null);
     };
 
-    const handleCloseUserMenu = () => {
-        setAnchorElUser(null);
-    };
+    const handleLogout = () => {
+        localStorage.removeItem("token")
+        navigate("/login")
+    }
 
     return (
         <NavContainer position="static">
@@ -117,7 +116,7 @@ function NavBar() {
                 <RightIcons>
                     <LanguageSelector />
                     <MenuLink sx={{ borderRadius: "50%", aspectRatio: "1/1" }}>
-                        <ImgLogout className="material-symbols-outlined">
+                        <ImgLogout onClick={handleLogout} className="material-symbols-outlined">
                             logout
                         </ImgLogout>
                     </MenuLink>

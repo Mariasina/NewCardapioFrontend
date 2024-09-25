@@ -12,10 +12,6 @@ export default function Home() {
         navigate("/login")
     }
 
-
-    if (decodedToken)
-        alert(decodedToken.sub)
-
     return (
         <>
             <NavBar/>
