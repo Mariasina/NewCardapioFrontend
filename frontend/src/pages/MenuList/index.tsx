@@ -1,8 +1,9 @@
 import { Fab, Stack, Typography } from "@mui/material";
 import NavBar from "../../components/NavBar";
-import { CardContainer, ListTitleContainer } from "./styles";
+import { CardContainer } from "./styles";
 import MenuCard from "./components/MenuCard";
 import CustomPagination from "../../components/CustomPagination";
+import AnimatedTitle from "../../components/AnimatedTitle";
 
 export default function MenuList() {
     return (
@@ -16,9 +17,7 @@ export default function MenuList() {
                             gap: "30px"
                         }
                     }}>
-                        <ListTitleContainer>
-                            <Typography fontFamily={"Marcellus"} fontSize={"1.1rem"}>Registered Menu List</Typography>
-                        </ListTitleContainer>
+                        <AnimatedTitle title={"Registered Menus"}/>
                         <Stack flexDirection={"row"} alignItems={"center"} justifyContent={"center"} gap={2}>
                             <Typography fontFamily={"Marcellus"} fontSize={"1.1rem"}>Add new Menu</Typography>
                             <Fab color="inherit" sx={{
