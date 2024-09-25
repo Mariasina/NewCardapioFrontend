@@ -1,6 +1,8 @@
 import { Fab, Stack } from "@mui/material";
 import { DescriptionInput, TitleInput, TitleInputContainer } from "./styles";
-import { createContext, ReactNode, useState } from "react";
+import { createContext, ReactNode, useEffect, useState } from "react";
+import { api, getAuth } from "../../../../api";
+import { AxiosError } from "axios";
 
 type IngredientsFieldProps = {
     ingredients: Ingredient[],
@@ -17,6 +19,16 @@ export type Ingredient = {
 
 
 const IngredientsField = ({ingredients}: IngredientsFieldProps) => {
+
+    useEffect(() => {
+        (async () => {
+            const res = api.get("/menu").catch((err: AxiosError) => {
+                alert(err.message)
+            })
+            
+        })()
+    }, [])
+
     return (
         <>
             <Stack>
