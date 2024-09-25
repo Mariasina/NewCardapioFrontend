@@ -35,6 +35,12 @@ function UserList() {
                     <Stack alignItems={"center"} justifyContent={"center"}>
                         <CardContainer>
                             <UserCard />
+                            <UserCard />
+                            <UserCard />
+                            <UserCard />
+                            <UserCard />
+                            <UserCard />
+                            <UserCard />
                         </CardContainer>
                     </Stack>
                 </Stack>

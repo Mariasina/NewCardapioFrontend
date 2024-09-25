@@ -1,8 +1,5 @@
 import { Box, Container, Stack, styled } from "@mui/material";
 
-
-
-
 export const CardContainer = styled(Box)(({}) => ({
     width: "100%",
     marginTop: "40px",
