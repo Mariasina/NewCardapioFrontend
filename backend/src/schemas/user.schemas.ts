@@ -2,7 +2,8 @@ import { z } from "zod";
 
 export const createAdminSchema = z.object({
     username: z.string({ required_error: "Username is required!"}).min(1),
-    password: z.string({ required_error: "Please, provide a password!"}).min(6)
+    password: z.string({ required_error: "Please, provide a password!"}).min(6),
+    isAdmin: z.boolean({ required_error: "Please check if admin"})
 })
 
 export type createAdminRequest = z.infer<typeof createAdminSchema>

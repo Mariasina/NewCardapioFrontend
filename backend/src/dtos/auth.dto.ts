@@ -8,6 +8,7 @@ export interface ILoginResponse extends IMessageResponse {
 export interface ICreateAdminResponse extends IMessageResponse {
     userdata: {
         username: string,
-        password: string
+        password: string,
+        isAdmin: boolean
     }
 }
