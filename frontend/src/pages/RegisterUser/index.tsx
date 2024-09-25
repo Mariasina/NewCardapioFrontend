@@ -1,8 +1,50 @@
 import { Box, Button, Checkbox, FormControlLabel, Stack, TextField, Typography } from "@mui/material";
 import { MainPanel, PicturePanel, RegisterImg } from "./styles";
 import registerImg from "../../assets/img/register-user-img.png"
+import { useNavigate } from "react-router-dom";
+import { useState } from "react";
+import { api } from "../../api";
+import { AxiosError } from "axios";
+import { useJwt } from "react-jwt";
 
 function RegisterUser() {
+    const navigate = useNavigate()
+    const {decodedToken, isExpired} = useJwt<any>(localStorage.getItem("token")!)
+
+    if(isExpired || !localStorage.getItem("token")){
+        localStorage.removeItem("token")
+        navigate("/login")
+    }
+
+    if(!decodedToken.isAdmin)
+        navigate("/")
+
+    const [username, setUsername] = useState("");
+    const [password, setPassword] = useState("");
+    const [isAdmin, setIsAdmin] = useState(false);
+
+    const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+        event.preventDefault();
+
+        const res = await api.post("/createAdmin", {
+            username,
+            password,
+            isAdmin
+        }).catch((err: AxiosError) => {
+            console.log(err.message)
+            alert("Incorrect username or password")
+        })
+
+        if (!res) {
+            return
+        }
+
+        if(res.status == 200)
+            navigate("/")
+        
+
+    }
+    
     return (
         <>
             <Stack flexDirection={"row"} minHeight={"100vh"}>
@@ -64,7 +106,7 @@ function RegisterUser() {
                                     color: "var(--bg-primary)"
                                 }
                             }}>
-                                <FormControlLabel control={<Checkbox />} label="Admin" sx={{ ".MuiTypography-root": { fontFamily: "Marcellus" } }} />
+                                <FormControlLabel checked={isAdmin} control={<Checkbox />} label="Admin" sx={{ ".MuiTypography-root": { fontFamily: "Marcellus" } }} />
                             </Box>
 
                             <Button

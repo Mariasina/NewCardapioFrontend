@@ -1,26 +1,61 @@
 import { Box, Button, Stack, TextField, Typography } from "@mui/material";
 import { GreenPanel, LoginImage } from "./styles";
-import LoginImg from "../../assets/img/loginImg.svg"
+import LoginImg from "../../assets/img/loginImg.svg";
+import { useState } from "react";
+import { api } from "../../api";
+import { AxiosError } from "axios";
+import { useNavigate } from "react-router-dom";
 
 export default function Login() {
-    return (
-        <>
-            <Stack flexDirection={"row"} height={"100vh"}>
-                <GreenPanel>
-                    <Stack
-                        height={"100%"}
-                        width={"75%"}
-                        my={5}
-                        sx={{
-                            backgroundColor: "var(--bg-primary)",
-                            padding: 5,
-                            borderRadius: "20px",
-                        }}
-                        zIndex={10}
-                    >
-                        <Typography fontFamily={"Marcellus SC"} variant="h2" color="white" mt={5} textAlign={"center"} zIndex={9}>Login</Typography>
+    const navigate = useNavigate();
 
-                        <Stack width={"100%"} gap={10} mt={15} alignItems={"center"} >
+    const [username, setUsername] = useState("");
+    const [password, setPassword] = useState("");
+
+    const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+        event.preventDefault();
+
+        const res = await api.post("/login", {
+            username,
+            password
+        }).catch((err: AxiosError) => {
+            console.log(err.message)
+            alert("Incorrect username or password")
+        })
+
+        if (!res) {
+            return
+        }
+
+        if(res.status == 200){
+            localStorage.setItem("token", res.data.token)
+            navigate("/")
+        }
+        
+
+    }
+
+
+    return (
+        <Stack flexDirection={"row"} height={"100vh"}>
+            <GreenPanel>
+                <Stack
+                    height={"100%"}
+                    width={"75%"}
+                    my={5}
+                    sx={{
+                        backgroundColor: "var(--bg-primary)",
+                        padding: 5,
+                        borderRadius: "20px",
+                    }}
+                    zIndex={10}
+                >
+                    <Typography fontFamily={"Marcellus SC"} variant="h2" color="white" mt={5} textAlign={"center"} zIndex={9}>
+                        Login
+                    </Typography>
+
+                    <form onSubmit={handleSubmit}>
+                        <Stack width={"100%"} gap={10} mt={15} alignItems={"center"}>
                             <TextField
                                 label="Username"
                                 sx={{
@@ -38,7 +73,8 @@ export default function Login() {
                                 }}
                                 variant="filled"
                                 fullWidth
-
+                                value={username}
+                                onChange={(e) => setUsername(e.target.value)} // Adicionando onChange
                             />
                             <TextField
                                 type="password"
@@ -58,9 +94,11 @@ export default function Login() {
                                     }
                                 }}
                                 fullWidth
+                                value={password}
+                                onChange={(e) => setPassword(e.target.value)} // Adicionando onChange
                             />
                             <Button
-
+                                type="submit" // Mudando para type="submit"
                                 variant="contained"
                                 fullWidth
                                 sx={{
@@ -71,15 +109,15 @@ export default function Login() {
                                 }}
                                 color="inherit"
                             >
-                                <Typography sx={{ textTransform: "capitalize" }} fontFamily={"Marcellus"} variant="h5" textAlign={"center"} >Login</Typography>
+                                <Typography sx={{ textTransform: "capitalize" }} fontFamily={"Marcellus"} variant="h5" textAlign={"center"}>Login</Typography>
                             </Button>
                         </Stack>
-                    </Stack>
-                </GreenPanel>
-                <Box>
-                    <LoginImage src={LoginImg}></LoginImage>
-                </Box>
-            </Stack>
-        </>
-    )
+                    </form>
+                </Stack>
+            </GreenPanel>
+            <Box>
+                <LoginImage src={LoginImg}></LoginImage>
+            </Box>
+        </Stack>
+    );
 }

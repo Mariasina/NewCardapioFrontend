@@ -1,8 +1,10 @@
 import { Fab, Stack, Typography } from "@mui/material";
 import NavBar from "../../components/NavBar";
-import { CardContainer, ListTitleContainer } from "./styles";
+import { CardContainer } from "./styles";
 import MenuCard from "./components/MenuCard";
 import CustomPagination from "../../components/CustomPagination";
+import AnimatedTitle from "../../components/AnimatedTitle";
+import { Link } from "react-router-dom";
 
 export default function MenuList() {
     return (
@@ -16,21 +18,24 @@ export default function MenuList() {
                             gap: "30px"
                         }
                     }}>
-                        <ListTitleContainer>
-                            <Typography fontFamily={"Marcellus"} fontSize={"1.1rem"}>Registered Menu List</Typography>
-                        </ListTitleContainer>
+                        <AnimatedTitle title={"Registered Menus"} />
                         <Stack flexDirection={"row"} alignItems={"center"} justifyContent={"center"} gap={2}>
                             <Typography fontFamily={"Marcellus"} fontSize={"1.1rem"}>Add new Menu</Typography>
-                            <Fab color="inherit" sx={{
-                                backgroundColor: "#CCA67F",
+                            <Link to={"/create-menu"} style={{
+                                textDecoration: "none",
+                                color: "black"
+                            }}>
+                                <Fab color="inherit" sx={{
+                                    backgroundColor: "#CCA67F",
 
-                                ":hover": {
-                                    backgroundColor: "#dec4ab",
-                                }
+                                    ":hover": {
+                                        backgroundColor: "#dec4ab",
+                                    }
 
-                            }} aria-label="add">
-                                <span className="material-symbols-outlined">add</span>
-                            </Fab>
+                                }} aria-label="add">
+                                    <span className="material-symbols-outlined">add</span>
+                                </Fab>
+                            </Link>
                         </Stack>
                     </Stack>
                     <Stack alignItems={"center"} justifyContent={"center"}>
@@ -71,14 +76,14 @@ export default function MenuList() {
                                 <Typography fontFamily={"Marcellus"} fontSize={"1.1rem"}>15/02/2024</Typography>
                                 <MenuCard />
                             </Stack>
-                            
+
                         </CardContainer>
                     </Stack>
                 </Stack>
             </Stack>
             <Stack alignItems={"center"}>
 
-                <CustomPagination pages={2}/>
+                <CustomPagination pages={2} />
             </Stack>
         </>
     )
