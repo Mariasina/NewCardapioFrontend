@@ -27,7 +27,7 @@ export default function Home() {
                             gap: "30px"
                         }
                     }}>
-                        <AnimatedTitle title={"Todays Menu"} />
+                        <AnimatedTitle title={"Cardápio de hoje"} />
                     </Stack>
                 </Stack>
                 <Stack flexDirection={"column"} width={"100%"} padding={"30px"}>

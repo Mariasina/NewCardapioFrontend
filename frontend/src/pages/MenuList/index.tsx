@@ -62,9 +62,9 @@ export default function MenuList() {
                             gap: "30px"
                         }
                     }}>
-                        <AnimatedTitle title={"Registered Menus"} />
+                        <AnimatedTitle title={"Cardápios cadastrados"} />
                         <Stack flexDirection={"row"} alignItems={"center"} justifyContent={"center"} gap={2}>
-                            <Typography fontFamily={"Marcellus"} fontSize={"1.1rem"}>Add new Menu</Typography>
+                            <Typography fontFamily={"Marcellus"} fontSize={"1.1rem"}>Adicionar Cardápio</Typography>
                             <Link to={"/create-menu"} style={{
                                 textDecoration: "none",
                                 color: "black"
