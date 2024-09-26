@@ -3,6 +3,6 @@ import { getUserController } from "../controllers/user.controller";
 
 const userRoutes = Router()
 
-userRoutes.get("/restaurant", getUserController)
+userRoutes.get("/users", getUserController)
 
 export default userRoutes
