@@ -10,6 +10,7 @@ import LanguageSelector from '../LanguageSelector';
 import { Link, useNavigate } from 'react-router-dom';
 import { useJwt } from 'react-jwt';
 import { useEffect, useState } from "react";
+import { Stack } from '@mui/material';
 
 
 function NavBar() {
@@ -70,19 +71,22 @@ function NavBar() {
                             onClose={handleCloseNavMenu}
                             sx={{ display: { xs: 'block', md: 'none' } }}
                         >
-                            <MenuLink>
-                                <Link to="/" style={{ textDecoration: "none", color: "black" }}>Home</Link>
-                            </MenuLink>
-                            <MenuLink>
-                                <Link to="/menus" style={{ textDecoration: "none", color: "black" }}>Cardápios</Link>
-                            </MenuLink>
-                            {decodedToken?.isAdmin && (
-                                <>
-                                    <MenuLink>
-                                        <Link to="/users" style={{ textDecoration: "none", color: "black" }}>Usuários</Link>
-                                    </MenuLink>
-                                </>
-                            )}
+
+                            <Stack>
+                                <MenuLink>
+                                    <Link to="/" style={{ textDecoration: "none", color: "black" }}>Home</Link>
+                                </MenuLink>
+                                <MenuLink>
+                                    <Link to="/menus" style={{ textDecoration: "none", color: "black" }}>Cardápios</Link>
+                                </MenuLink>
+                                {decodedToken?.isAdmin && (
+                                    <>
+                                        <MenuLink>
+                                            <Link to="/users" style={{ textDecoration: "none", color: "black" }}>Usuários</Link>
+                                        </MenuLink>
+                                    </>
+                                )}
+                            </Stack>
                         </Menu>
                     </Box>
                     <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
