@@ -20,6 +20,8 @@ type MenuResponseType = {
     menus: MenuInfo[]
 }
 
+const formatDate = (data: Date) => ((data.getDate() )) + "/" + ((data.getMonth() + 1)) + "/" + data.getFullYear() 
+
 export default function MenuList() {
     document.title = "Cardápios"
 
@@ -47,7 +49,10 @@ export default function MenuList() {
             if (!res) {
                 return
             }
-            setMenus(res.data.menus)
+
+            const menus = res.data.menus.map((m) => {return {...m, date: new Date(m.date)}})
+
+            setMenus(menus)
         })()
     });
 
@@ -87,7 +92,7 @@ export default function MenuList() {
                             {menus.map((item, index) =>
 
                                 <Stack alignItems={"center"} gap={"10px"}>
-                                    <Typography fontFamily={"Marcellus"} fontSize={"1.1rem"}>{item.date}</Typography>
+                                    <Typography fontFamily={"Marcellus"} fontSize={"1.1rem"}>{formatDate(item.date)}</Typography>
                                     <MenuCard key={index} />
                                 </Stack>
                             )}
