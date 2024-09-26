@@ -8,6 +8,8 @@ import { AxiosError } from "axios";
 import { useJwt } from "react-jwt";
 
 function RegisterUser() {
+    document.title = "Criar novo usuário"
+
     const navigate = useNavigate()
     const { decodedToken, isExpired } = useJwt<any>(localStorage.getItem("token")!)
 

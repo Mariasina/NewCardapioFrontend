@@ -5,8 +5,11 @@ import { useState } from "react";
 import { api } from "../../api";
 import { AxiosError } from "axios";
 import { useNavigate } from "react-router-dom";
+import { DefaultResponse } from "../../types";
 
 export default function Login() {
+    document.title = "Login"
+
     const navigate = useNavigate();
 
     const [username, setUsername] = useState("");
@@ -18,9 +21,8 @@ export default function Login() {
         const res = await api.post("/login", {
             username,
             password
-        }).catch((err: AxiosError) => {
-            console.log(err.message)
-            alert("Incorrect username or password")
+        }).catch((err: AxiosError<DefaultResponse>) => {
+            alert(err.response?.data.message)
         })
 
         if (!res) {
