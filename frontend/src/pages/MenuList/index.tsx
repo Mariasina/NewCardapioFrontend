@@ -36,11 +36,6 @@ export default function MenuList() {
         navigate("/login")
     }
 
-    if (decodedToken) {
-        if (decodedToken.isAdmin == false)
-            navigate("/")
-    }
-
     useEffect(() => {
         (async () => {
             const res = await api.get<MenuResponseType>("/menu", getAuth(token)).catch((err: AxiosError<DefaultResponse>) => {
