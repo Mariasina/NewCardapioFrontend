@@ -65,9 +65,9 @@ function UserList() {
                             gap: "30px"
                         }
                     }}>
-                        <AnimatedTitle title={"Registered Users"} />
+                        <AnimatedTitle title={"Usuários registrados"} />
                         <Stack flexDirection={"row"} alignItems={"center"} justifyContent={"center"} gap={2}>
-                            <Typography fontFamily={"Marcellus"} fontSize={"1.1rem"}>Add new User</Typography>
+                            <Typography fontFamily={"Marcellus"} fontSize={"1.1rem"}>Adicionar Usuário</Typography>
                             <Link to={"/register-user"} style={{
                                 textDecoration: "none",
                                 color: "black"

@@ -10,6 +10,7 @@ import LanguageSelector from '../LanguageSelector';
 import { Link, useNavigate } from 'react-router-dom';
 import { useJwt } from 'react-jwt';
 import { useEffect, useState } from "react";
+import { Stack } from '@mui/material';
 
 
 function NavBar() {
@@ -22,11 +23,9 @@ function NavBar() {
         if (isExpired || !token) {
             localStorage.removeItem("token");
             navigate("/login");
-        } else if (decodedToken && decodedToken.isAdmin === false) {
-            navigate("/");
         }
     }, [isExpired, token, decodedToken, navigate])
-    
+
     const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
         setAnchorElNav(event.currentTarget);
     };
@@ -72,32 +71,33 @@ function NavBar() {
                             onClose={handleCloseNavMenu}
                             sx={{ display: { xs: 'block', md: 'none' } }}
                         >
-                             <MenuLink>
-                                <Link to="/" style={{ textDecoration: "none", color: "black" }}>Home</Link>
-                            </MenuLink>
-                            {/* Mostrar opções para admin */}
-                            {decodedToken?.isAdmin && (
-                                <>
-                                    <MenuLink>
-                                        <Link to="/menus" style={{ textDecoration: "none", color: "black" }}>Cardápios</Link>
-                                    </MenuLink>
-                                    <MenuLink>
-                                        <Link to="/users" style={{ textDecoration: "none", color: "black" }}>Usuários</Link>
-                                    </MenuLink>
-                                </>
-                            )}
+
+                            <Stack>
+                                <MenuLink>
+                                    <Link to="/" style={{ textDecoration: "none", color: "black" }}>Home</Link>
+                                </MenuLink>
+                                <MenuLink>
+                                    <Link to="/menus" style={{ textDecoration: "none", color: "black" }}>Cardápios</Link>
+                                </MenuLink>
+                                {decodedToken?.isAdmin && (
+                                    <>
+                                        <MenuLink>
+                                            <Link to="/users" style={{ textDecoration: "none", color: "black" }}>Usuários</Link>
+                                        </MenuLink>
+                                    </>
+                                )}
+                            </Stack>
                         </Menu>
                     </Box>
                     <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
                         <MenuLink>
                             <Link to="/" style={{ textDecoration: "none", color: "white" }}>Home</Link>
                         </MenuLink>
-                        {/* Mostrar opções para admin */}
+                        <MenuLink>
+                            <Link to="/menus" style={{ textDecoration: "none", color: "white" }}>Cardápios</Link>
+                        </MenuLink>
                         {decodedToken?.isAdmin && (
                             <>
-                                <MenuLink>
-                                    <Link to="/menus" style={{ textDecoration: "none", color: "white" }}>Cardápios</Link>
-                                </MenuLink>
                                 <MenuLink>
                                     <Link to="/users" style={{ textDecoration: "none", color: "white" }}>Usuários</Link>
                                 </MenuLink>
