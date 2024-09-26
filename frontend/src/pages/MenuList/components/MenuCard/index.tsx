@@ -1,5 +1,7 @@
 import { Box, Typography } from "@mui/material";
 import { CardBox } from "./styles";
+import { MenuInfo } from "../..";
+
 
 export default function MenuCard() {
     return (
