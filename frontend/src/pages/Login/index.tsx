@@ -5,8 +5,11 @@ import { useState } from "react";
 import { api } from "../../api";
 import { AxiosError } from "axios";
 import { useNavigate } from "react-router-dom";
+import { DefaultResponse } from "../../types";
 
 export default function Login() {
+    document.title = "Login"
+
     const navigate = useNavigate();
 
     const [username, setUsername] = useState("");
@@ -18,9 +21,8 @@ export default function Login() {
         const res = await api.post("/login", {
             username,
             password
-        }).catch((err: AxiosError) => {
-            console.log(err.message)
-            alert("Incorrect username or password")
+        }).catch((err: AxiosError<DefaultResponse>) => {
+            alert(err.response?.data.message)
         })
 
         if (!res) {
@@ -31,10 +33,7 @@ export default function Login() {
             localStorage.setItem("token", res.data.token)
             navigate("/")
         }
-        
-
     }
-
 
     return (
         <Stack flexDirection={"row"} height={"100vh"}>
@@ -95,10 +94,10 @@ export default function Login() {
                                 }}
                                 fullWidth
                                 value={password}
-                                onChange={(e) => setPassword(e.target.value)} // Adicionando onChange
+                                onChange={(e) => setPassword(e.target.value)} 
                             />
                             <Button
-                                type="submit" // Mudando para type="submit"
+                                type="submit" 
                                 variant="contained"
                                 fullWidth
                                 sx={{

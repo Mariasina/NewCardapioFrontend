@@ -1,8 +1,8 @@
 import axios, { AxiosHeaders } from "axios";
 
 
-export const getAuth = (token: string)  => {
-    return {
+export const getAuth = (token: string | null)  => {
+    return !token ? {} : {
         headers: {
             Authorization: `Bearer ${token}`
         }

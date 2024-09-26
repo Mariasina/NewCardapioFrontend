@@ -4,9 +4,56 @@ import UserCard from "./components/UserCard";
 import AnimatedTitle from "../../components/AnimatedTitle";
 import { CardContainer } from "./styles";
 import CustomPagination from "../../components/CustomPagination";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { api, getAuth } from "../../api";
+import { useJwt } from "react-jwt";
+import { DefaultResponse } from "../../types";
+import { AxiosError } from "axios";
+
+export type UserInfo = {
+    username: string,
+    isAdmin: boolean
+}
+
+type UserResponseType = {
+    message: string,
+    users: UserInfo[]
+}
 
 function UserList() {
+    document.title = "Usuários"
+
+    const navigate = useNavigate()
+    const token = localStorage.getItem("token")
+    const { decodedToken, isExpired } = useJwt<any>(token ?? "")
+
+    const [users, setUsers] = useState<any[]>([])
+
+    if (isExpired || !token) {
+        localStorage.removeItem("token")
+        navigate("/login")
+    }
+
+    if (decodedToken) {
+        if (decodedToken.isAdmin == false)
+            navigate("/")
+    }
+
+    useEffect(() => {
+        (async () => {
+            const res = await api.get<UserResponseType>("/users", getAuth(token)).catch((err: AxiosError<DefaultResponse>) => {
+                alert(err.response?.data.message)
+            })
+            if (!res) {
+                return
+            }
+            setUsers(res.data.users)
+        })()
+    });
+
+    
+
     return (
         <>
             <NavBar />
@@ -40,13 +87,9 @@ function UserList() {
                     </Stack>
                     <Stack alignItems={"center"} justifyContent={"center"}>
                         <CardContainer>
-                            <UserCard />
-                            <UserCard />
-                            <UserCard />
-                            <UserCard />
-                            <UserCard />
-                            <UserCard />
-                            <UserCard />
+                            {users.map((item, index) => 
+                                <UserCard key={index} userInfo={item}/>
+                            )}
                         </CardContainer>
                     </Stack>
                 </Stack>

@@ -4,12 +4,13 @@ import cors from 'cors'
 
 import { verifyToken } from './middlewares/auth.middleware';
 import { AppError } from './errors';
-import authRoutes from './routes/auth.routes';
-import userRoutes from './routes/user.routes';
+
 import ingredientRoutes from './routes/ingredient.routes';
 import dishRoutes from './routes/dish.routes';
 import restaurantRoutes from './routes/restaurant.routes';
 import menuRoutes from './routes/menu.routes';
+import authRoutes from './routes/auth.routes';
+import userRoutes from './routes/user.routes';
 
 const app = express();
 

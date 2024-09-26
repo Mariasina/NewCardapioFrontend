@@ -1,22 +1,21 @@
 import { Request, Response } from "express";
 import { ICreateAdminResponse, ILoginResponse } from "../dtos/auth.dto";
-import { createUserService, loginUserService } from "../services/user.services";
+import { createUserService, loginUserService } from "../services/auth.services";
 import { createAdminRequest, userLoginRequest } from "../schemas/user.schemas";
 import { AppError } from "../errors";
 
 
 export const createAdmin = async (req: Request<{}, {}, createAdminRequest>, res: Response<ICreateAdminResponse>) => {
-    const { password, username } = req.body
+    const { password, username, isAdmin } = req.body
 
-
-    const user = await createUserService(username, password, true)
+    const user = await createUserService(username, password, isAdmin)
 
     if (!user)
         throw new AppError("Failed to create user!", 400)
 
     res.json({
         message: `Admin account (${username}) was created!`,
-        userdata: { username: user.username, password }
+        userdata: { username: user.username, password, isAdmin }
     })
 }
 

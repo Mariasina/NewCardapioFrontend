@@ -8,16 +8,20 @@ import { AxiosError } from "axios";
 import { useJwt } from "react-jwt";
 
 function RegisterUser() {
-    const navigate = useNavigate()
-    const {decodedToken, isExpired} = useJwt<any>(localStorage.getItem("token")!)
+    document.title = "Criar novo usuário"
 
-    if(isExpired || !localStorage.getItem("token")){
+    const navigate = useNavigate()
+    const { decodedToken, isExpired } = useJwt<any>(localStorage.getItem("token")!)
+
+    if (isExpired || !localStorage.getItem("token")) {
         localStorage.removeItem("token")
         navigate("/login")
     }
 
-    if(!decodedToken.isAdmin)
-        navigate("/")
+    if (decodedToken) {
+        if (decodedToken.isAdmin == false)
+            navigate("/")
+    }
 
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
@@ -32,19 +36,18 @@ function RegisterUser() {
             isAdmin
         }).catch((err: AxiosError) => {
             console.log(err.message)
-            alert("Incorrect username or password")
+            alert(err.message)
         })
 
         if (!res) {
             return
         }
 
-        if(res.status == 200)
+        if (res.status == 200)
             navigate("/")
-        
 
     }
-    
+
     return (
         <>
             <Stack flexDirection={"row"} minHeight={"100vh"}>
@@ -60,71 +63,75 @@ function RegisterUser() {
                         zIndex={10}
                     >
                         <Typography fontFamily={"Marcellus SC"} variant="h2" color="white" mt={5} textAlign={"center"} zIndex={9}>Criar novo usuário</Typography>
+                        <form onSubmit={handleSubmit}>
+                            <Stack width={"100%"} gap={10} mt={15} alignItems={"center"} >
+                                <TextField
+                                    label="Username"
+                                    sx={{
+                                        backgroundColor: "#ffffffe8",
+                                        ".MuiFilledInput-root, &": {
+                                            borderTopRightRadius: "8px",
+                                            borderTopLeftRadius: "8px",
+                                            fontFamily: "Marcellus",
+                                            fontSize: "1.1rem"
+                                        },
+                                        ".MuiFormLabel-root": {
+                                            fontFamily: "Marcellus",
+                                            fontWeight: "600"
+                                        }
+                                    }}
+                                    variant="filled"
+                                    fullWidth
+                                    value={username}
+                                    onChange={(e) => setUsername(e.target.value)}
 
-                        <Stack width={"100%"} gap={10} mt={15} alignItems={"center"} >
-                            <TextField
-                                label="Username"
-                                sx={{
-                                    backgroundColor: "#ffffffe8",
-                                    ".MuiFilledInput-root, &": {
-                                        borderTopRightRadius: "8px",
-                                        borderTopLeftRadius: "8px",
-                                        fontFamily: "Marcellus",
-                                        fontSize: "1.1rem"
-                                    },
-                                    ".MuiFormLabel-root": {
-                                        fontFamily: "Marcellus",
-                                        fontWeight: "600"
+                                />
+                                <TextField
+                                    type="password"
+                                    label="Password"
+                                    variant="filled"
+                                    sx={{
+                                        backgroundColor: "#ffffffe8",
+                                        ".MuiFilledInput-root, &": {
+                                            borderTopRightRadius: "8px",
+                                            borderTopLeftRadius: "8px",
+                                            fontFamily: "Marcellus",
+                                            fontSize: "1.1rem"
+                                        },
+                                        ".MuiFormLabel-root": {
+                                            fontFamily: "Marcellus",
+                                            fontWeight: "600"
+                                        }
+                                    }}
+                                    fullWidth
+                                    value={password}
+                                    onChange={(e) => setPassword(e.target.value)}
+                                />
+                                <Box sx={{
+                                    width: "100%",
+                                    ".MuiCheckbox-root.Mui-checked": {
+                                        color: "var(--bg-primary)"
                                     }
-                                }}
-                                variant="filled"
-                                fullWidth
+                                }}>
+                                    <FormControlLabel control={<Checkbox checked={isAdmin} onChange={(e) => setIsAdmin(e.target.checked)} />} label="Admin" sx={{ ".MuiTypography-root": { fontFamily: "Marcellus" } }} />
+                                </Box>
 
-                            />
-                            <TextField
-                            type="password"
-                                label="Password"
-                                variant="filled"
-                                sx={{
-                                    backgroundColor: "#ffffffe8",
-                                    ".MuiFilledInput-root, &": {
-                                        borderTopRightRadius: "8px",
-                                        borderTopLeftRadius: "8px",
-                                        fontFamily: "Marcellus",
-                                        fontSize: "1.1rem"
-                                    },
-                                    ".MuiFormLabel-root": {
-                                        fontFamily: "Marcellus",
-                                        fontWeight: "600"
-                                    }
-                                }}
-                                fullWidth
-                            />
-                            <Box sx={{
-                                width: "100%",
-                                ".MuiCheckbox-root.Mui-checked": {
-                                    color: "var(--bg-primary)"
-                                }
-                            }}>
-                                <FormControlLabel checked={isAdmin} control={<Checkbox />} label="Admin" sx={{ ".MuiTypography-root": { fontFamily: "Marcellus" } }} />
-                            </Box>
-
-                            <Button
-
-                                variant="contained"
-                                fullWidth
-                                sx={{
-                                    maxWidth: "350px",
-                                    padding: 3,
-                                    backgroundColor: "var(--bg-primary)",
-                                    color: "white"
-                                }}
-                                color="inherit"
-                            >
-                                <Typography sx={{ textTransform: "capitalize" }} fontFamily={"Marcellus"} variant="h5">Cadastrar</Typography>
-                            </Button>
-                        </Stack>
-
+                                <Button
+                                    type="submit"
+                                    variant="contained"
+                                    fullWidth
+                                    sx={{
+                                        maxWidth: "350px",
+                                        padding: 3,
+                                        backgroundColor: "var(--bg-primary)",
+                                        color: "white"
+                                    }}
+                                    color="inherit"
+                                >
+                                    <Typography sx={{ textTransform: "capitalize" }} fontFamily={"Marcellus"} variant="h5">Cadastrar</Typography>
+                                </Button>
+                            </Stack>
+                        </form>
                     </Stack>
                 </MainPanel>
                 <PicturePanel>

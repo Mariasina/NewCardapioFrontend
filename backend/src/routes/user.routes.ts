@@ -1,10 +1,8 @@
 import { Router } from "express";
-import { createAdmin, userLogin } from "../controllers/auth.controller";
+import { getUserController } from "../controllers/user.controller";
 
 const userRoutes = Router()
 
-userRoutes.get("/", async (req, res) => {
-    res.send("ok")
-})
+userRoutes.get("/restaurant", getUserController)
 
 export default userRoutes

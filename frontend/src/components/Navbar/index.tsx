@@ -7,31 +7,43 @@ import MenuIcon from '@mui/icons-material/Menu';
 import { ImgLogo, ImgLogout, MenuLink, NavContainer, RightIcons, RightItens } from './styles';
 import logo from '../../assets/img/NewCardapio-logo.png';
 import LanguageSelector from '../LanguageSelector';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { useJwt } from 'react-jwt';
+import { useEffect, useState } from "react";
+
 
 function NavBar() {
-    const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(null);
-    const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null);
+    const navigate = useNavigate();
+    const token = localStorage.getItem("token");
+    const { decodedToken, isExpired } = useJwt<any>(token ?? "");
+    const [anchorElNav, setAnchorElNav] = useState<null | HTMLElement>(null);
 
+    useEffect(() => {
+        if (isExpired || !token) {
+            localStorage.removeItem("token");
+            navigate("/login");
+        } else if (decodedToken && decodedToken.isAdmin === false) {
+            navigate("/");
+        }
+    }, [isExpired, token, decodedToken, navigate])
+    
     const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
         setAnchorElNav(event.currentTarget);
-    };
-    const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
-        setAnchorElUser(event.currentTarget);
     };
 
     const handleCloseNavMenu = () => {
         setAnchorElNav(null);
     };
 
-    const handleCloseUserMenu = () => {
-        setAnchorElUser(null);
+    const handleLogout = () => {
+        localStorage.removeItem("token");
+        navigate("/login");
     };
 
     return (
         <NavContainer position="static">
             <Box>
-                <ImgLogo src={logo}></ImgLogo>
+                <ImgLogo src={logo} alt="Logo" />
             </Box>
             <RightItens>
                 <Toolbar disableGutters>
@@ -44,7 +56,6 @@ function NavBar() {
                         >
                             <MenuIcon />
                         </IconButton>
-
                         <Menu
                             id="menu-appbar"
                             anchorEl={anchorElNav}
@@ -61,69 +72,50 @@ function NavBar() {
                             onClose={handleCloseNavMenu}
                             sx={{ display: { xs: 'block', md: 'none' } }}
                         >
-                            <MenuLink>
-                                <Link to={"/"} style={{
-                                    textDecoration: "none",
-                                    color: "black"
-                                }}>
-                                    Home
-                                </Link>
+                             <MenuLink>
+                                <Link to="/" style={{ textDecoration: "none", color: "black" }}>Home</Link>
                             </MenuLink>
-                            <MenuLink>
-                                <Link to={"/menus"} style={{
-                                    textDecoration: "none",
-                                    color: "black"
-                                }}>
-                                    Cardápios
-                                </Link>
-                            </MenuLink>
-                            <MenuLink>
-                                <Link to={"/users"} style={{
-                                    textDecoration: "none",
-                                    color: "black"
-                                }}>
-                                    Usuários
-                                </Link>
-                            </MenuLink>
+                            {/* Mostrar opções para admin */}
+                            {decodedToken?.isAdmin && (
+                                <>
+                                    <MenuLink>
+                                        <Link to="/menus" style={{ textDecoration: "none", color: "black" }}>Cardápios</Link>
+                                    </MenuLink>
+                                    <MenuLink>
+                                        <Link to="/users" style={{ textDecoration: "none", color: "black" }}>Usuários</Link>
+                                    </MenuLink>
+                                </>
+                            )}
                         </Menu>
                     </Box>
                     <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
                         <MenuLink>
-                            <Link to={"/"} style={{
-                                    textDecoration: "none",
-                                    color: "white"
-                                }}>
-                                Home
-                            </Link>
+                            <Link to="/" style={{ textDecoration: "none", color: "white" }}>Home</Link>
                         </MenuLink>
-                        <MenuLink>
-                            <Link to={"/menus"} style={{
-                                    textDecoration: "none",
-                                    color: "white"
-                                }}>
-                                Cardápios
-                            </Link>
-                        </MenuLink>
-                        <MenuLink>
-                            <Link to={"/users"} style={{
-                                    textDecoration: "none",
-                                    color: "white"
-                                }}>
-                                Usuários
-                            </Link>
-                        </MenuLink>
+                        {/* Mostrar opções para admin */}
+                        {decodedToken?.isAdmin && (
+                            <>
+                                <MenuLink>
+                                    <Link to="/menus" style={{ textDecoration: "none", color: "white" }}>Cardápios</Link>
+                                </MenuLink>
+                                <MenuLink>
+                                    <Link to="/users" style={{ textDecoration: "none", color: "white" }}>Usuários</Link>
+                                </MenuLink>
+                            </>
+                        )}
                     </Box>
                 </Toolbar>
                 <RightIcons>
                     <LanguageSelector />
                     <MenuLink sx={{ borderRadius: "50%", aspectRatio: "1/1" }}>
-                        <ImgLogout className="material-symbols-outlined">
+                        <ImgLogout onClick={handleLogout} className="material-symbols-outlined">
                             logout
                         </ImgLogout>
                     </MenuLink>
                 </RightIcons>
             </RightItens>
-        </NavContainer >
+        </NavContainer>
     );
 }
+
 export default NavBar;

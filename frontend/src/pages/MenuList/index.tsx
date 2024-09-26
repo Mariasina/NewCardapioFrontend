@@ -7,6 +7,8 @@ import AnimatedTitle from "../../components/AnimatedTitle";
 import { Link } from "react-router-dom";
 
 export default function MenuList() {
+    document.title = "Cardápios"
+
     return (
         <>
             <NavBar />

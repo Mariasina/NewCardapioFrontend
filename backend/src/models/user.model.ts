@@ -14,6 +14,4 @@ const userSchema = new Schema<IUser>({
     isAdmin: {type: Boolean, required: true}
 })
 
-const User = model<IUser>('User', userSchema)
-
-export default User
+export const User = model<IUser>('User', userSchema)
