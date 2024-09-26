@@ -1,32 +1,46 @@
 import { Box, Fab, Grid2 as Grid, Stack, Typography } from "@mui/material";
 import RestaurantForm from "./components/RestaurantForm";
 import { useEffect, useState } from "react";
+import { api, getAuth } from "../../api";
 
 export type Restaurant = {
+    id: string,
     name: string,
     description: string,
     dishes: Dish[]
 }
 
+export interface Dish {
+    id: string,
+    name: string,
+    ingredients: Ingredient[]
+}
+
 export type Ingredient = {
+    id: string,
     name: string,
     hasGluten: boolean,
     isAnimal: boolean,
     isMeat: boolean
 }
 
-export interface Dish {
-    name: string,
-    ingredients: Ingredient[]
+type RestaurantResponse = {
+    message: string,
+    restaurants: Restaurant[]
 }
 
+
+
 export default function CreateMenu() {
+
+
+
     const [dbRestaurants, setDbRestaurants] = useState<Restaurant[]>([])
     const [localRestaurants, setLocalRestaurants] = useState<Restaurant[]>([])
 
     useEffect(() => {
         (async () => {
-
+            const res = api.get<Restaurant[]>("/restaurant", getAuth())
         })()
     });
 
