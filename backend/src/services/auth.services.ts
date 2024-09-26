@@ -1,13 +1,9 @@
 import bcrypt from "bcryptjs"
-import User from "../models/user.model"
 import { AppError } from "../errors"
 import jwt from "jsonwebtoken"
 import { IJwtPayload } from "../types/jwt.types"
 import { secretToken } from "../middlewares/auth.middleware"
-
-export const getUserService = async () => {
-    return await User.find()
-}
+import { User } from "../models/user.model"
 
 export const createUserService = async (username: string, password: string, isAdmin: boolean) => {
     const userExists = await User.findOne({username})
