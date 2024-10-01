@@ -1,19 +1,84 @@
 import { useJwt } from "react-jwt";
-import CustomPagination from "../../components/CustomPagination";
 import NavBar from "../../components/NavBar";
 import { useNavigate } from "react-router-dom";
 import { Box, Stack } from "@mui/material";
 import AnimatedTitle from "../../components/AnimatedTitle";
+import { useEffect, useState } from "react";
+import { api, getAuth } from "../../api";
+import { AxiosError } from "axios";
+import { DefaultResponse } from "../../types";
+
+export type Menu = {
+    date: Date;
+    restaurants: Restaurant[];
+};
+
+export type Restaurant = {
+    id: string;
+    name: string;
+    description: string;
+    dishes: Dish[];
+};
+
+export type Dish = {
+    id: string;
+    name: string;
+    ingredients: Ingredient[];
+};
+
+export type Ingredient = {
+    id: string;
+    name: string;
+    hasGluten: boolean;
+    isAnimal: boolean;
+    isMeat: boolean;
+};
+
+type MenuResponse = {
+    message: string;
+    menus: Menu[];
+};
 
 export default function Home() {
-    document.title = "Home"
+    document.title = "Home";
 
-    const navigate = useNavigate()
-    const { decodedToken, isExpired } = useJwt<any>(localStorage.getItem("token")!)
+    const token = localStorage.getItem("token");
+    const [menu, setMenu] = useState<Menu | null>(null); // Inicie como null
 
-    if (isExpired || !localStorage.getItem("token")) {
-        localStorage.removeItem("token")
-        navigate("/login")
+    const { isExpired } = useJwt<any>(token ?? "");
+    const navigate = useNavigate();
+
+    if (isExpired || !token) {
+        localStorage.removeItem("token");
+        navigate("/login");
+    }
+
+    useEffect(() => {
+        (async () => {
+            const res = await api.get<MenuResponse>("/menu", getAuth(token)).catch((err: AxiosError<DefaultResponse>) => {
+                alert(err.response?.data.message);
+            });
+
+            if (!res) {
+                return;
+            }
+
+            // Converta as datas e filtre para encontrar o menu de hoje
+            const today = new Date();
+            const todayString = today.toISOString().split('T')[0]; // YYYY-MM-DD format
+
+            const todayMenu = res.data.menus
+                .map((m) => ({ ...m, date: new Date(m.date) })) // Converter string para Date
+                .find((m) => m.date.toISOString().split('T')[0] === todayString); // Comparar apenas a data
+
+            setMenu(todayMenu || null); // Define o menu ou null se não encontrado
+        })();
+    });
+
+    const getRestaurants = async ({id}: {id: string}) => {
+        const res = await api.get<MenuResponse>("/restaurant", getAuth(token)).catch((err: AxiosError<DefaultResponse>) => {
+            alert(err.response?.data.message);
+        });
     }
 
     return (
@@ -32,10 +97,15 @@ export default function Home() {
                 </Stack>
                 <Stack flexDirection={"column"} width={"100%"} padding={"30px"}>
                     <Box sx={{ border: "7px solid #0C482E", height: "600px", width: "100%", borderRadius: "10px" }}>
+                        {menu ? (
+                            <p>{menu.date.toLocaleDateString()}</p> 
 
+                        ) : (
+                            <p>Nenhum cardápio disponível para hoje.</p> 
+                        )}
                     </Box>
                 </Stack>
             </Stack>
         </>
-    )
+    );
 }
