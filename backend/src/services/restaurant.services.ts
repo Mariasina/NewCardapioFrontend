@@ -7,6 +7,9 @@ export const getRestaurantService = async () => {
     return await Restaurant.find()
 }
 
+export const getRestaurantByIdService = async ({id} : {id : string}) => {
+    return await Restaurant.findById(id)
+}
 
 export const createRestaurantService = async(name: string, description: string, dishes: string[]) => {
     const dishesId = await Promise.all(dishes.map(async x => {
