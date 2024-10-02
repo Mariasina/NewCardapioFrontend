@@ -55,7 +55,7 @@ export default function Home() {
 
     useEffect(() => {
         (async () => {
-            const res = await api.get<MenuResponse>("/menu", getAuth(token)).catch((err: AxiosError<DefaultResponse>) => {
+            const res = await api.get<MenuResponse>("/menu/:date", getAuth(token)).catch((err: AxiosError<DefaultResponse>) => {
                 alert(err.response?.data.message);
             });
 
@@ -65,21 +65,17 @@ export default function Home() {
 
             // Converta as datas e filtre para encontrar o menu de hoje
             const today = new Date();
-            const todayString = today.toISOString().split('T')[0]; // YYYY-MM-DD format
+            const todayString = today.toISOString().split('T')[0]; 
+            console.log(today.toISOString())
 
             const todayMenu = res.data.menus
-                .map((m) => ({ ...m, date: new Date(m.date) })) // Converter string para Date
-                .find((m) => m.date.toISOString().split('T')[0] === todayString); // Comparar apenas a data
+                .map((m) => ({ ...m, date: new Date(m.date) })) 
+                .find((m) => m.date.toISOString().split('T')[0] === todayString); 
 
-            setMenu(todayMenu || null); // Define o menu ou null se não encontrado
+            setMenu(todayMenu || null); 
         })();
-    });
+    },[]);
 
-    const getRestaurants = async ({id}: {id: string}) => {
-        const res = await api.get<MenuResponse>("/restaurant", getAuth(token)).catch((err: AxiosError<DefaultResponse>) => {
-            alert(err.response?.data.message);
-        });
-    }
 
     return (
         <>
