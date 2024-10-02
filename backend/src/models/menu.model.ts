@@ -6,7 +6,7 @@ export type IMenu = {
 }
 
 const menuSchema = new Schema<IMenu>({
-    date: {type: Schema.Types.Date, required: true, unique: true},
+    date: {type: Schema.Types.Date, required: true, unique: true },
     restaurants: [{ type: Schema.Types.ObjectId, ref: 'Restaurants', required: true }]
 })
 

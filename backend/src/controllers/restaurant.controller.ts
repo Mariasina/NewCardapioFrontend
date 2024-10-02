@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import { IMessageResponse } from "../dtos";
 import { createRestaurantRequest } from "../schemas/restaurant.schemas";
-import { createRestaurantService, getRestaurantByIdService, getRestaurantService } from "../services/restaurant.services";
+import { createRestaurantService, getRestaurantByIdService, getRestaurantByMenuService, getRestaurantService } from "../services/restaurant.services";
 import { IRestaurant } from "../models/restaurant.model";
 import { RestaurantListResponse } from "../dtos/restaurant.dto";
 
@@ -14,10 +14,10 @@ export const getRestaurantController = async (req: Request, res: Response<Restau
     })
 }
 
-export const getRestaurantByIdController = async (req: Request, res: Response<IMessageResponse>) => {
+export const getRestaurantByMenuController = async (req: Request, res: Response<IMessageResponse>) => {
     const { id } = req.params; // Pega o ID do parâmetro da URL
 
-    await getRestaurantByIdService({ id });
+    const restaurant = await getRestaurantByMenuService(id);
 
     res.json({
         message: "Successfully fetched the restaurant",
