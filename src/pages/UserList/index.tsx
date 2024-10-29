@@ -26,7 +26,7 @@ function UserList() {
 
     const navigate = useNavigate()
     const token = localStorage.getItem("token")
-    const { decodedToken, isExpired } = useJwt<any>(token ?? "")
+    const { decodedToken, isExpired } = useJwt<JwtPayload>(token ?? "")
 
     const [users, setUsers] = useState<any[]>([])
 

@@ -1,9 +1,8 @@
-import { ImgArrow, ImgFlag, LanguageContainer } from "./styles";
+import { ImgFlag } from "./styles";
 import flag from "../../assets/img/flag-usa.svg"
 import flagBR from "../../assets/img/flag-brazil.svg"
-import { createTheme, FormControl, InputLabel, MenuItem, Select, Toolbar } from "@mui/material";
+import { FormControl, MenuItem, Select } from "@mui/material";
 import { useState } from "react";
-import { amber } from "@mui/material/colors";
 
 function LanguageSelector() {
     const [value, setValue] = useState("br")

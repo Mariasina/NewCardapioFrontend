@@ -1,18 +1,17 @@
-import { Accordion, AccordionDetails, AccordionSummary, Box, Button, Checkbox, Fab, FormControlLabel, FormGroup, Modal, Stack, TextField, Typography } from "@mui/material";
+import { Accordion, AccordionDetails, AccordionSummary, Autocomplete, Box, Button, Checkbox, Fab, FormControlLabel, FormGroup, Modal, Stack, TextField, Typography } from "@mui/material";
 import { DescriptionInput, TitleInput, TitleInputContainer } from "./styles";
-import { createContext, ReactNode, useEffect, useState } from "react";
-import { api, getAuth } from "../../../../api";
-import { AxiosError } from "axios";
+import { useEffect, useState } from "react";
 
 import boi from "../../../../assets/img/boi.svg"
 import carne from "../../../../assets/img/carne.svg"
 import gluten from "../../../../assets/img/gluten.svg"
 import { Dish, Ingredient, Restaurant } from "../..";
+import { api, getAuth } from "../../../../api";
+import { AxiosError } from "axios";
 
 type DishesFieldProps = {
     dbDishes: Dish[],
     dbIngredients: Ingredient[],
-    localDishes: Dish[]
     setDishes: React.Dispatch<React.SetStateAction<Dish[]>>
 }
 
@@ -37,9 +36,8 @@ const IngredientsField = ({ dbIngredients, localIngredients, setLocalIngredients
 
     return (
         <Stack>
-            {ingredients.map((value, index) => {
-                return <>
-                    <Stack flexDirection={"row"} alignItems={"center"} justifyContent={"space-between"} gap={5}>
+            {ingredients.map((value, index) =>
+                    <Stack key={index} flexDirection={"row"} alignItems={"center"} justifyContent={"space-between"} gap={5}>
                         <Typography>{value.name}</Typography>
                         <FormGroup>
                             <Stack flexDirection={"row"}>
@@ -49,27 +47,45 @@ const IngredientsField = ({ dbIngredients, localIngredients, setLocalIngredients
                             </Stack>
                         </FormGroup>
                     </Stack>
-                </>;
-            })}
+            )}
         </Stack>
     )
 }
 
-const DishesField = ({ localDishes, dbDishes, dbIngredients, setDishes }: DishesFieldProps) => {
+const DishesField = ({ dbIngredients, setDishes }: DishesFieldProps) => {
     const [openAddDish, setOpenAddDish] = useState(false)
     const [openAddIngredient, setOpenAddIngredient] = useState(false)
-    const [modalDish, setModalDish] = useState("")
+    const [modalDish, setModalDish] = useState<Dish | string>("")
     const [modalIngredient, setModalIngredient] = useState("")
 
-    console.log(localDishes)
+
+    const [localDishes, setLocalDishes] = useState<Dish[]>([])
+    const [dbDishes, setDbDishes] = useState<Dish[]>([])
+
+    useEffect(() => {
+        (async () => {
+            const res = await api.get("/dish", getAuth(localStorage.getItem("token"))).catch((err: AxiosError) => {
+                alert(err.message)
+            })
+
+            if (!res) return
+
+            setDbDishes(res.data.dishes)
+        })()
+    }, [])
 
     const handleAddDish = () => {
         setOpenAddDish(true)
     }
 
     const handleModalAddDish = () => {
+        if (typeof(modalDish) === 'string') {
+            setLocalDishes(value => [...value, {id: "", name: modalDish, ingredients: []}])
+        } else {
+            setLocalDishes(value => [...value, modalDish])
+        }
+
         console.log(modalDish)
-        setDishes(value => [...value, {id: "", name: modalDish, ingredients: []}])
         setOpenAddDish(false)
         setModalDish("")
     }
@@ -108,7 +124,18 @@ const DishesField = ({ localDishes, dbDishes, dbIngredients, setDishes }: Dishes
                     <Typography id="dish-modal-title" variant="h6" component="h2">
                         Add Dish
                     </Typography>
-                    <TextField fullWidth label="Name" value={modalDish} onChange={(e) => setModalDish(e.target.value)}/>
+
+                    <Autocomplete
+                        disablePortal
+                        value={modalDish}
+                        options={dbDishes}
+                        getOptionLabel={(option) => typeof(option) == "string" ? option : option.name}
+                        renderInput={(params) => <TextField {...params} label="Nome"/>}
+                        onChange={(event, newValue) => setModalDish(newValue ?? "")}
+                        freeSolo
+                    >
+                        
+                    </Autocomplete>
 
                     <Button variant="outlined" sx={{marginLeft: "auto"}} onClick={handleModalAddDish}>Add</Button>
                     
@@ -181,11 +208,9 @@ const DishesField = ({ localDishes, dbDishes, dbIngredients, setDishes }: Dishes
 
 
 export default function RestaurantForm({ restaurant, setRestaurants, dbDishes, dbIngredients }: RestaurantFormProps) {
-    // const [title, setTitle] = useState("Nome do restaurante")
-    // const [description, setDescription] = useState("Descrição do restaurante")
-    // const [dishes, setDishes] = useState<Dish[]>(dishList)
+    const [title, setTitle] = useState(restaurant.name)
+    const [description, setDescription] = useState(restaurant.description)
     const [dishes, setDishes] = useState<Dish[]>([])
-    const [restaurantInfo, setRestaurantInfo] = useState(restaurant)
     const [ingredients, setIngredients] = useState<Ingredient[]>([])
     const [step, setStep] = useState(0)
 
@@ -204,23 +229,23 @@ export default function RestaurantForm({ restaurant, setRestaurants, dbDishes, d
             }}>
                 <TitleInputContainer>
                     <TitleInput
-                        value={restaurantInfo.name}
-                        onChange={(e) => { setRestaurantInfo({ ...restaurantInfo, name: e.target.value }) }}
-                        onKeyUp={(e) => { if (e.key === "Enter") setStep(value => value + 1) }}
+                        value={title}
+                        onChange={(e) => { setTitle(e.target.value) }}
+                        onKeyUp={(e) => { if (e.key === "Enter" && step == 0) setStep(value => value + 1) }}
                     />
                 </TitleInputContainer>
 
                 {step > 0 &&
                     <DescriptionInput
                         onInput={textAreaInputHandler}
-                        value={restaurantInfo.description}
-                        onKeyUp={(e) => { if (e.key === "Enter") setStep(value => value + 1) }}
-                        onChange={(e) => { setRestaurantInfo({ ...restaurantInfo, description: e.target.value }) }}
+                        value={description}
+                        onKeyUp={(e) => { if (e.key === "Enter" && step == 1) setStep(value => value + 1) }}
+                        onChange={(e) => { setDescription(e.target.value) }}
                     />
                 }
 
                 {step > 1 &&
-                    <DishesField dbIngredients={dbIngredients} localDishes={dishes} setDishes={setDishes} dbDishes={dbDishes} />
+                    <DishesField dbIngredients={dbIngredients} setDishes={setDishes} dbDishes={dbDishes} />
                 }
             </Stack>
         </>

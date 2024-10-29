@@ -10,6 +10,7 @@ import { useEffect, useState } from "react";
 import { api, getAuth } from "../../api";
 import { AxiosError } from "axios";
 import { DefaultResponse } from "../../types";
+import { JwtPayload } from "../../utils/jwt.utils";
 
 export type MenuInfo = {
     date: Date
@@ -27,7 +28,7 @@ export default function MenuList() {
 
     const navigate = useNavigate()
     const token = localStorage.getItem("token")
-    const { decodedToken, isExpired } = useJwt<any>(token ?? "")
+    const { isExpired } = useJwt<JwtPayload>(token ?? "")
 
     const [menus, setMenus] = useState<any[]>([])
 

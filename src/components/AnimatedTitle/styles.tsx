@@ -1,7 +1,7 @@
 import { Box } from "@mui/material";
 import styled from "styled-components";
 
-export const ListTitleContainer = styled(Box)(({}) => ({
+export const ListTitleContainer = styled(Box)(() => ({
     display: "flex",
     alignItems: "center",
     justifyContent: "center",

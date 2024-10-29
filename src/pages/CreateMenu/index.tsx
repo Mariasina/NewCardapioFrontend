@@ -6,6 +6,7 @@ import { useJwt } from "react-jwt";
 import { useNavigate } from "react-router-dom";
 import { AxiosError } from "axios";
 import { DefaultResponse } from "../../types";
+import { JwtPayload } from "../../utils/jwt.utils";
 
 export type Restaurant = {
     id: string,
@@ -41,7 +42,7 @@ type IngredientResponse = {
 export default function CreateMenu() {
     const token = localStorage.getItem("token")
 
-    const {decodedToken, isExpired} = useJwt<any>(token ?? "")
+    const { isExpired } = useJwt<JwtPayload>(token ?? "")
 
     const navigate = useNavigate()
 

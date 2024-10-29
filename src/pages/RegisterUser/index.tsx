@@ -6,12 +6,13 @@ import { useState } from "react";
 import { api } from "../../api";
 import { AxiosError } from "axios";
 import { useJwt } from "react-jwt";
+import { JwtPayload } from "../../utils/jwt.utils";
 
 function RegisterUser() {
     document.title = "Criar novo usuário"
 
     const navigate = useNavigate()
-    const { decodedToken, isExpired } = useJwt<any>(localStorage.getItem("token")!)
+    const { decodedToken, isExpired } = useJwt<JwtPayload>(localStorage.getItem("token")!)
 
     if (isExpired || !localStorage.getItem("token")) {
         localStorage.removeItem("token")

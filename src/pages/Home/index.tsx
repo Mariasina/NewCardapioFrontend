@@ -1,5 +1,4 @@
 import { useJwt } from "react-jwt";
-import NavBar from "../../components/NavBar";
 import { useNavigate } from "react-router-dom";
 import { Box, Stack } from "@mui/material";
 import AnimatedTitle from "../../components/AnimatedTitle";
@@ -7,6 +6,8 @@ import { useEffect, useState } from "react";
 import { api, getAuth } from "../../api";
 import { AxiosError } from "axios";
 import { DefaultResponse } from "../../types";
+import Navbar from "../../components/NavBar";
+import { JwtPayload } from "../../utils/jwt.utils";
 
 export type Menu = {
     date: Date;
@@ -45,7 +46,7 @@ export default function Home() {
     const token = localStorage.getItem("token");
     const [menu, setMenu] = useState<Menu | null>(null); // Inicie como null
 
-    const { isExpired } = useJwt<any>(token ?? "");
+    const { isExpired } = useJwt<JwtPayload>(token ?? "");
     const navigate = useNavigate();
 
     if (isExpired || !token) {
@@ -79,7 +80,7 @@ export default function Home() {
 
     return (
         <>
-            <NavBar />
+            <Navbar />
             <Stack alignItems={"center"} justifyContent={"center"} width={"100%"} pt={10}>
                 <Stack bgcolor="#F8F4EB" sx={{ width: "90%", maxWidth: "1000px" }}>
                     <Stack flexDirection={"row"} justifyContent={"space-between"} alignItems={"center"} sx={{

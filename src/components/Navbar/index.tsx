@@ -13,10 +13,10 @@ import { useEffect, useState } from "react";
 import { Stack } from '@mui/material';
 
 
-function NavBar() {
+export default function Navbar() {
     const navigate = useNavigate();
     const token = localStorage.getItem("token");
-    const { decodedToken, isExpired } = useJwt<any>(token ?? "");
+    const { decodedToken, isExpired } = useJwt<JwtPayload>(token ?? "");
     const [anchorElNav, setAnchorElNav] = useState<null | HTMLElement>(null);
 
     useEffect(() => {
@@ -117,5 +117,3 @@ function NavBar() {
         </NavContainer>
     );
 }
-
-export default NavBar;
