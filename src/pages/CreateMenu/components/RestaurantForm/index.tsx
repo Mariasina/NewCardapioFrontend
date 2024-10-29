@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { Accordion, AccordionDetails, AccordionSummary, Autocomplete, Box, Button, Checkbox, Fab, FormControlLabel, FormGroup, Modal, Stack, TextField, Typography } from "@mui/material";
 import { DescriptionInput, TitleInput, TitleInputContainer } from "./styles";
 import { useEffect, useState } from "react";

@@ -1,12 +1,6 @@
 import { Box, Typography } from "@mui/material";
 import { UserBox } from "./styles";
 import user from "../../../../assets/img/user-icon.png"
-import { useEffect } from "react";
-import { api, getAuth } from "../../../../api";
-import { AxiosError } from "axios";
-import { DefaultResponse } from "../../../../types";
-import { useJwt } from "react-jwt";
-import { useNavigate } from "react-router-dom";
 import { UserInfo } from "../..";
 
 type UserCardProps = {

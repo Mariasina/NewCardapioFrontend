@@ -1,6 +1,6 @@
-import { Box, Container, Stack, styled } from "@mui/material";
+import { Box, styled } from "@mui/material";
 
-export const CardContainer = styled(Box)(({}) => ({
+export const CardContainer = styled(Box)(() => ({
     width: "100%",
     marginTop: "40px",
     display: "grid",

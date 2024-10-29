@@ -4,16 +4,17 @@ import Toolbar from '@mui/material/Toolbar';
 import IconButton from '@mui/material/IconButton';
 import Menu from '@mui/material/Menu';
 import MenuIcon from '@mui/icons-material/Menu';
-import { ImgLogo, ImgLogout, MenuLink, NavContainer, RightIcons, RightItens } from './styles';
 import logo from '../../assets/img/NewCardapio-logo.png';
 import LanguageSelector from '../LanguageSelector';
 import { Link, useNavigate } from 'react-router-dom';
 import { useJwt } from 'react-jwt';
 import { useEffect, useState } from "react";
 import { Stack } from '@mui/material';
+import { JwtPayload } from '../../utils/jwt.utils';
+import { ImgLogo, ImgLogout, MenuLink, NavContainer, RightIcons, RightItens } from './styles';
 
 
-export default function Navbar() {
+export default function NavBar() {
     const navigate = useNavigate();
     const token = localStorage.getItem("token");
     const { decodedToken, isExpired } = useJwt<JwtPayload>(token ?? "");

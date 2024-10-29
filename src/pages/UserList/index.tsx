@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Fab, Stack, Typography } from "@mui/material";
 import NavBar from "../../components/NavBar";
 import UserCard from "./components/UserCard";
@@ -10,6 +11,7 @@ import { api, getAuth } from "../../api";
 import { useJwt } from "react-jwt";
 import { DefaultResponse } from "../../types";
 import { AxiosError } from "axios";
+import { JwtPayload } from "../../utils/jwt.utils";
 
 export type UserInfo = {
     username: string,

@@ -6,7 +6,7 @@ import { useEffect, useState } from "react";
 import { api, getAuth } from "../../api";
 import { AxiosError } from "axios";
 import { DefaultResponse } from "../../types";
-import Navbar from "../../components/NavBar";
+import NavBar from "../../components/NavBar";
 import { JwtPayload } from "../../utils/jwt.utils";
 
 export type Menu = {
@@ -80,7 +80,7 @@ export default function Home() {
 
     return (
         <>
-            <Navbar />
+            <NavBar />
             <Stack alignItems={"center"} justifyContent={"center"} width={"100%"} pt={10}>
                 <Stack bgcolor="#F8F4EB" sx={{ width: "90%", maxWidth: "1000px" }}>
                     <Stack flexDirection={"row"} justifyContent={"space-between"} alignItems={"center"} sx={{
