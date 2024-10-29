@@ -14,7 +14,7 @@ import { JwtPayload } from '../../utils/jwt.utils';
 import { ImgLogo, ImgLogout, MenuLink, NavContainer, RightIcons, RightItens } from './styles';
 
 
-export default function NavBar() {
+export default function Navbar() {
     const navigate = useNavigate();
     const token = localStorage.getItem("token");
     const { decodedToken, isExpired } = useJwt<JwtPayload>(token ?? "");

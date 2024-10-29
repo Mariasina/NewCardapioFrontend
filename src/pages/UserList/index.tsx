@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Fab, Stack, Typography } from "@mui/material";
-import NavBar from "../../components/NavBar";
+import Navbar from "../../components/Navbar";
 import UserCard from "./components/UserCard";
 import AnimatedTitle from "../../components/AnimatedTitle";
 import { CardContainer } from "./styles";
@@ -58,7 +58,7 @@ function UserList() {
 
     return (
         <>
-            <NavBar />
+            <Navbar />
             <Stack alignItems={"center"} justifyContent={"center"} width={"100%"} pt={10}>
                 <Stack bgcolor="#F8F4EB" sx={{ width: "90%", maxWidth: "1000px" }}>
                     <Stack flexDirection={"row"} justifyContent={"space-between"} alignItems={"center"} sx={{

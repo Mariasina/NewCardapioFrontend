@@ -1,5 +1,6 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Fab, Stack, Typography } from "@mui/material";
-import NavBar from "../../components/NavBar";
+import Navbar from "../../components/Navbar";
 import { CardContainer } from "./styles";
 import MenuCard from "./components/MenuCard";
 import CustomPagination from "../../components/CustomPagination";
@@ -54,7 +55,7 @@ export default function MenuList() {
 
     return (
         <>
-            <NavBar />
+            <Navbar />
             <Stack alignItems={"center"} justifyContent={"center"} width={"100%"} pt={10}>
                 <Stack bgcolor="#F8F4EB" sx={{ width: "90%", maxWidth: "1000px" }}>
                     <Stack flexDirection={"row"} justifyContent={"space-between"} alignItems={"center"} sx={{
