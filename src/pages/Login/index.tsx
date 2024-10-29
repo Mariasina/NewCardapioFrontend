@@ -1,6 +1,6 @@
 import { Box, Button, Stack, TextField, Typography } from "@mui/material";
 import { GreenPanel, LoginImage } from "./styles";
-import LoginImg from "../../assets/img/loginImg.svg";
+import LoginImg from "../../assets/img/login_img.svg";
 import { useState } from "react";
 import { api } from "../../api";
 import { AxiosError } from "axios";
