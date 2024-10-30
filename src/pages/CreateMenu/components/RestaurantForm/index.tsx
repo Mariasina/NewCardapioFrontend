@@ -1,26 +1,33 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { Accordion, AccordionDetails, AccordionSummary, Autocomplete, Box, Button, Checkbox, Fab, FormControlLabel, FormGroup, Modal, Stack, TextField, Typography } from "@mui/material";
+import { 
+    Accordion, 
+    AccordionDetails, 
+    AccordionSummary, 
+    Autocomplete, 
+    Box, 
+    Button, 
+    Checkbox, 
+    Fab, 
+    FormControlLabel, 
+    FormGroup, 
+    Modal, 
+    Stack, 
+    TextField, 
+    Typography 
+} from "@mui/material";
 import { DescriptionInput, TitleInput, TitleInputContainer } from "./styles";
 import { useEffect, useState } from "react";
-
-import boi from "../../../../assets/img/boi.svg"
-import carne from "../../../../assets/img/carne.svg"
-import gluten from "../../../../assets/img/gluten.svg"
+import boi from "../../../../assets/img/boi.svg";
+import carne from "../../../../assets/img/carne.svg";
+import gluten from "../../../../assets/img/gluten.svg";
 import { Dish, Ingredient, Restaurant } from "../..";
 import { api, getAuth } from "../../../../api";
 import { AxiosError } from "axios";
 
+// Types
 type DishesFieldProps = {
     dbDishes: Dish[],
     dbIngredients: Ingredient[],
-    setDishes: React.Dispatch<React.SetStateAction<Dish[]>>
-}
-
-type IngredientsFieldProps = {
-    dbIngredients: Ingredient[]
-    localIngredients: Ingredient[]
-    setLocalIngredients: React.Dispatch<React.SetStateAction<Ingredient[]>>
-
 }
 
 
@@ -31,224 +38,238 @@ type RestaurantFormProps = {
     setRestaurants: React.Dispatch<React.SetStateAction<Restaurant[]>>
 }
 
-
-const IngredientsField = ({ dbIngredients, localIngredients, setLocalIngredients }: IngredientsFieldProps) => {
-    const [ingredients, setIngredients] = useState(localIngredients)
-
-    return (
-        <Stack>
-            {ingredients.map((value, index) =>
-                    <Stack key={index} flexDirection={"row"} alignItems={"center"} justifyContent={"space-between"} gap={5}>
-                        <Typography>{value.name}</Typography>
-                        <FormGroup>
-                            <Stack flexDirection={"row"}>
-                                <FormControlLabel control={<Checkbox />} checked={value.isMeat} label={<img src={carne} />} />
-                                <FormControlLabel control={<Checkbox />} checked={value.isAnimal} label={<img src={boi} />} />
-                                <FormControlLabel control={<Checkbox />} checked={value.hasGluten} label={<img src={gluten} />} />
-                            </Stack>
-                        </FormGroup>
-                    </Stack>
-            )}
-        </Stack>
-    )
+type IngredientsFieldProps = {
+    localIngredients: Ingredient[],
+    updateIngredientProperty: (index: number, property: 'isMeat' | 'isAnimal' | 'hasGluten', value: boolean) => void,
 }
 
-const DishesField = ({ dbIngredients, setDishes }: DishesFieldProps) => {
-    const [openAddDish, setOpenAddDish] = useState(false)
-    const [openAddIngredient, setOpenAddIngredient] = useState(false)
-    const [modalDish, setModalDish] = useState<Dish | string>("")
-    const [modalIngredient, setModalIngredient] = useState("")
+const IngredientsField = ({ localIngredients, updateIngredientProperty }: IngredientsFieldProps) => {
+    return (
+        <Stack>
+            {localIngredients.map((ingredient, index) => (
+                <Stack key={index} flexDirection="row" alignItems="center" justifyContent="space-between" gap={5}>
+                    <Typography>{ingredient.name}</Typography>
+                    <FormGroup>
+                        <Stack flexDirection="row">
+                            <FormControlLabel 
+                                control={<Checkbox checked={ingredient.isMeat} />}
+                                onChange={(_, value) => updateIngredientProperty(index, "isMeat", value)}
+                                label={<img src={carne} alt="Meat" />} 
+                            />
+                            <FormControlLabel 
+                                control={<Checkbox checked={ingredient.isAnimal} />}
+                                onChange={(_, value) => updateIngredientProperty(index, "isAnimal", value)}
+                                label={<img src={boi} alt="Animal" />} 
+                            />
+                            <FormControlLabel 
+                                control={<Checkbox checked={ingredient.hasGluten} />}
+                                onChange={(_, value) => updateIngredientProperty(index, "hasGluten", value)}
+                                label={<img src={gluten} alt="Gluten" />} 
+                            />
+                        </Stack>
+                    </FormGroup>
+                </Stack>
+            ))}
+        </Stack>
+    );
+};
 
 
-    const [localDishes, setLocalDishes] = useState<Dish[]>([])
-    const [dbDishes, setDbDishes] = useState<Dish[]>([])
+
+// DishesField Component
+const DishesField = ({ dbDishes, dbIngredients }: DishesFieldProps) => {
+    const [openAddDish, setOpenAddDish] = useState(false);
+    const [openAddIngredient, setOpenAddIngredient] = useState(false);
+    const [modalDish, setModalDish] = useState<Dish | string>("");
+    const [modalIngredient, setModalIngredient] = useState<Ingredient | string>("");
+    const [modalIngredientDishIndex, setModalDishIndex] = useState<number | undefined>();
+    const [localDishes, setLocalDishes] = useState<Dish[]>([]);
+    const [dbDishesState, setDbDishes] = useState<Dish[]>([]);
+    const [dbIngredientsState, setDbIngredients] = useState<Ingredient[]>([]);
 
     useEffect(() => {
-        (async () => {
-            const res = await api.get("/dish", getAuth(localStorage.getItem("token"))).catch((err: AxiosError) => {
-                alert(err.message)
-            })
+        const fetchDishes = async () => {
+            try {
+                const res = await api.get("/dish", getAuth(localStorage.getItem("token")));
+                setDbDishes(res.data.dishes);
+            } catch (err) {
+                alert((err as AxiosError).message);
+            }
+        };
 
-            if (!res) return
+        const fetchIngredients = async () => {
+            try {
+                const res = await api.get("/ingredient", getAuth(localStorage.getItem("token")));
+                setDbIngredients(res.data.ingredients);
+            } catch (err) {
+                alert((err as AxiosError).message);
+            }
+        };
 
-            setDbDishes(res.data.dishes)
-        })()
-    }, [])
+        fetchDishes();
+        fetchIngredients();
+    }, []);
 
-    const handleAddDish = () => {
-        setOpenAddDish(true)
-    }
+    const handleAddDish = () => setOpenAddDish(true);
 
     const handleModalAddDish = () => {
-        if (typeof(modalDish) === 'string') {
-            setLocalDishes(value => [...value, {id: "", name: modalDish, ingredients: []}])
-        } else {
-            setLocalDishes(value => [...value, modalDish])
-        }
+        const newDish = typeof modalDish === 'string' 
+            ? { id: "", name: modalDish, ingredients: [] } 
+            : modalDish;
 
-        console.log(modalDish)
-        setOpenAddDish(false)
-        setModalDish("")
-    }
+        setLocalDishes(prev => [...prev, newDish]);
+        setOpenAddDish(false);
+        setModalDish("");
+    };
 
-    const handleAddIngredient = () => {
-        setOpenAddIngredient(true)
-    }
+    const handleAddIngredient = (dishIndex: number) => {
+        setModalDishIndex(dishIndex);
+        setOpenAddIngredient(true);
+    };
 
     const handleModalAddIngredient = () => {
-        // localDishes.
-        // setDishes(value => )
-        setOpenAddDish(false)
-       
-    }
+        if (modalIngredientDishIndex === undefined) return;
+
+        const newIngredient: Ingredient = typeof modalIngredient === 'string'
+            ? { id: "", name: modalIngredient, hasGluten: false, isAnimal: false, isMeat: false }
+            : modalIngredient;
+
+        setLocalDishes(prevDishes => {
+            const updatedDishes = [...prevDishes];
+            updatedDishes[modalIngredientDishIndex].ingredients.push(newIngredient);
+            return updatedDishes;
+        });
+
+        setOpenAddIngredient(false);
+        setModalIngredient("");
+    };
+
+    const updateIngredientProperty = (dishIndex: number, ingredientIndex: number, property: 'isMeat' | 'isAnimal' | 'hasGluten', value: boolean) => {
+        setLocalDishes(prevDishes => {
+            const updatedDishes = [...prevDishes];
+            updatedDishes[dishIndex].ingredients[ingredientIndex][property] = value;
+            return updatedDishes;
+        });
+    };
+
     return (
         <>
-            <Modal
-                open={openAddDish}
-                onClose={() => setOpenAddDish(false)}
-                aria-labelledby="dish-modal-title"
-            >
-                <Box sx={{
-                    display: "flex",
-                    gap: 2,
-                    flexDirection: "column",
-                    position: 'absolute',
-                    top: '50%',
-                    left: '50%',
-                    transform: 'translate(-50%, -50%)',
-                    width: 400,
-                    bgcolor: 'background.paper',
-                    border: '2px solid #000',
-                    boxShadow: 24,
-                    p: 4,
-                }}>
-                    <Typography id="dish-modal-title" variant="h6" component="h2">
-                        Add Dish
-                    </Typography>
-
+            <Modal open={openAddDish} onClose={() => setOpenAddDish(false)}>
+                <Box sx={modalStyle}>
+                    <Typography id="dish-modal-title" variant="h6">Add Dish</Typography>
                     <Autocomplete
                         disablePortal
                         value={modalDish}
-                        options={dbDishes}
-                        getOptionLabel={(option) => typeof(option) == "string" ? option : option.name}
-                        renderInput={(params) => <TextField {...params} label="Nome"/>}
+                        options={dbDishesState}
+                        getOptionLabel={(option) => typeof option === "string" ? option : option.name}
+                        renderInput={(params) => <TextField {...params} label="Nome" />}
                         onChange={(event, newValue) => setModalDish(newValue ?? "")}
                         freeSolo
-                    >
-                        
-                    </Autocomplete>
-
-                    <Button variant="outlined" sx={{marginLeft: "auto"}} onClick={handleModalAddDish}>Add</Button>
-                    
-                </Box>
-            </Modal>
-            <Modal
-                open={openAddIngredient}
-                onClose={() => setOpenAddIngredient(false)}
-                aria-labelledby="ingredient-modal-title"
-                aria-describedby="ingredient-modal-description"
-            >
-                <Box sx={{
-                    display: "flex",
-                    gap: 2,
-                    flexDirection: "column",
-                    position: 'absolute',
-                    top: '50%',
-                    left: '50%',
-                    transform: 'translate(-50%, -50%)',
-                    width: 400,
-                    bgcolor: 'background.paper',
-                    border: '2px solid #000',
-                    boxShadow: 24,
-                    p: 4,
-                }}>
-                    <Typography id="ingredient-modal-title" variant="h6" component="h2">
-                        Add Ingredient
-                    </Typography>
-                    <TextField fullWidth label="Name" value={modalIngredient} onChange={(e) => setModalIngredient(e.target.value)}/>
-
-                    <Button variant="outlined" sx={{marginLeft: "auto"}} onClick={handleModalAddIngredient}>Add</Button>
-                    
+                    />
+                    <Button variant="outlined" sx={{ marginLeft: "auto" }} onClick={handleModalAddDish}>Add</Button>
                 </Box>
             </Modal>
 
-            <Stack sx={{
-                "div": {
-                    backgroundColor: "transparent"
-                }
-            }}>
-                {localDishes.map((value, index) => <>
-                    <Accordion key={index} variant="elevation" >
+            <Modal open={openAddIngredient} onClose={() => setOpenAddIngredient(false)}>
+                <Box sx={modalStyle}>
+                    <Typography id="ingredient-modal-title" variant="h6">Add Ingredient</Typography>
+                    <Autocomplete
+                        disablePortal
+                        value={modalIngredient}
+                        options={dbIngredientsState}
+                        getOptionLabel={(option) => typeof option === "string" ? option : option.name}
+                        renderInput={(params) => <TextField {...params} label="Nome" />}
+                        onChange={(event, newValue) => setModalIngredient(newValue ?? "")}
+                        freeSolo
+                    />
+                    <Button variant="outlined" sx={{ marginLeft: "auto" }} onClick={handleModalAddIngredient}>Add</Button>
+                </Box>
+            </Modal>
+
+            <Stack>
+                {localDishes.map((dish, index) => (
+                    <Accordion key={index}>
                         <AccordionSummary>
-                            <Typography>{value.name}</Typography>
+                            <Typography>{dish.name}</Typography>
                         </AccordionSummary>
                         <AccordionDetails>
                             <IngredientsField
-                                dbIngredients={dbIngredients}
-                                setLocalIngredients={() => {}}
-                                localIngredients={value.ingredients}
+                                localIngredients={dish.ingredients}
+                                updateIngredientProperty={(ingredientIndex, property, value) => 
+                                    updateIngredientProperty(index, ingredientIndex, property, value)
+                                }
                             />
-                            <Fab variant="extended" onClick={handleAddIngredient}>
+                            <Fab variant="extended" onClick={() => handleAddIngredient(index)}>
                                 <span className="material-symbols-outlined">add</span>
                                 <Typography>Add Ingredient</Typography>
                             </Fab>
                         </AccordionDetails>
                     </Accordion>
-                </>)}
-
+                ))}
                 <Fab variant="extended" sx={{ width: "fit-content", marginTop: "30px" }} onClick={handleAddDish}>
                     <span className="material-symbols-outlined">add</span>
                     <Typography>Add Dish</Typography>
                 </Fab>
             </Stack>
         </>
-    )
-}
-
-
+    );
+};
 
 
 export default function RestaurantForm({ restaurant, setRestaurants, dbDishes, dbIngredients }: RestaurantFormProps) {
-    const [title, setTitle] = useState(restaurant.name)
-    const [description, setDescription] = useState(restaurant.description)
-    const [dishes, setDishes] = useState<Dish[]>([])
-    const [ingredients, setIngredients] = useState<Ingredient[]>([])
-    const [step, setStep] = useState(0)
+    const [title, setTitle] = useState(restaurant.name);
+    const [description, setDescription] = useState(restaurant.description);
+    const [step, setStep] = useState(0);
 
-    const textAreaInputHandler = (e: React.FormEvent<HTMLTextAreaElement>) => {
+    const handleTextAreaInput = (e: React.FormEvent<HTMLTextAreaElement>) => {
         const element = e.currentTarget;
         element.style.height = 'auto';
         element.style.height = `${element.scrollHeight}px`;
-    }
+    };
 
     return (
-        <>
-            <Stack gap={0} padding={3} sx={{
-                outline: "2px solid #E4D7CC",
-                borderRadius: "20px",
-                boxShadow: "2px 8px 15px 5px #4338383a"
-            }}>
-                <TitleInputContainer>
-                    <TitleInput
-                        value={title}
-                        onChange={(e) => { setTitle(e.target.value) }}
-                        onKeyUp={(e) => { if (e.key === "Enter" && step == 0) setStep(value => value + 1) }}
-                    />
-                </TitleInputContainer>
+        <Stack gap={0} padding={3} sx={formContainerStyle}>
+            <TitleInputContainer>
+                <TitleInput
+                    value={title}
+                    onChange={(e) => setTitle(e.target.value)}
+                    onKeyUp={(e) => { if (e.key === "Enter" && step === 0) setStep(prev => prev + 1); }}
+                />
+            </TitleInputContainer>
 
-                {step > 0 &&
-                    <DescriptionInput
-                        onInput={textAreaInputHandler}
-                        value={description}
-                        onKeyUp={(e) => { if (e.key === "Enter" && step == 1) setStep(value => value + 1) }}
-                        onChange={(e) => { setDescription(e.target.value) }}
-                    />
-                }
+            {step > 0 && (
+                <DescriptionInput
+                    onInput={handleTextAreaInput}
+                    value={description}
+                    onKeyUp={(e) => { if (e.key === "Enter" && step === 1) setStep(prev => prev + 1); }}
+                    onChange={(e) => setDescription(e.target.value)}
+                />
+            )}
 
-                {step > 1 &&
-                    <DishesField dbIngredients={dbIngredients} setDishes={setDishes} dbDishes={dbDishes} />
-                }
-            </Stack>
-        </>
-    )
+            {step > 1 && (
+                <DishesField dbIngredients={dbIngredients} dbDishes={dbDishes} />
+            )}
+        </Stack>
+    );
 }
+
+const modalStyle = {
+    display: "flex",
+    gap: 2,
+    flexDirection: "column",
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
+    width: 400,
+    bgcolor: 'background.paper',
+    border: '2px solid #000',
+    boxShadow: 24,
+    p: 4,
+};
+
+const formContainerStyle = {
+    outline: "2px solid #E4D7CC",
+    borderRadius: "20px",
+    boxShadow: "2px 8px 15px 5px #4338383a",
+};
