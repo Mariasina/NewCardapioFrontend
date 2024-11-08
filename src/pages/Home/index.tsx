@@ -56,7 +56,7 @@ export default function Home() {
 
     useEffect(() => {
         (async () => {
-            const res = await api.get<MenuResponse>("/menu/:date", getAuth(token)).catch((err: AxiosError<DefaultResponse>) => {
+            const res = await api.get<MenuResponse>("/menuInfo/:date", getAuth(token)).catch((err: AxiosError<DefaultResponse>) => {
                 alert(err.response?.data.message);
             });
 

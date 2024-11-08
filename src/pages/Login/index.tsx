@@ -54,7 +54,7 @@ export default function Login() {
                     </Typography>
 
                     <form onSubmit={handleSubmit}>
-                        <Stack width={"100%"} gap={10} mt={15} alignItems={"center"}>
+                        <Stack width={"100%"} gap={5} mt={10} alignItems={"center"}>
                             <TextField
                                 label="Username"
                                 sx={{
