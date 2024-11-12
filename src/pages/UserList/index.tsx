@@ -7,7 +7,7 @@ import { CardContainer } from "./styles";
 import CustomPagination from "../../components/CustomPagination";
 import { Link, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { api, getAuth } from "../../api";
+import { api, getAuth } from "../../api/index.ts";
 import { useJwt } from "react-jwt";
 import { DefaultResponse } from "../../types";
 import { AxiosError } from "axios";
