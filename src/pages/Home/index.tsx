@@ -8,6 +8,7 @@ import { AxiosError } from "axios";
 import { DefaultResponse } from "../../types";
 import Navbar from "../../components/Navbar";
 import { JwtPayload } from "../../utils/jwt.utils";
+import { DateTime } from "luxon";
 
 export type Menu = {
     date: Date;
@@ -54,28 +55,41 @@ export default function Home() {
         navigate("/login");
     }
 
+
     useEffect(() => {
         (async () => {
-            const res = await api.get<MenuResponse>("/menuInfo/:date", getAuth(token)).catch((err: AxiosError<DefaultResponse>) => {
-                alert(err.response?.data.message);
-            });
+            try {
+                const res = await api.get<MenuResponse>("/menu", getAuth(token));
 
-            if (!res) {
-                return;
+                if (res && res.data) {
+                    // Obter a data de hoje em UTC no formato 'YYYY-MM-DD'
+                    const today = DateTime.utc().toISODate();
+
+                    // Encontrar o menu de hoje
+                    const todayMenuData = res.data.menus.find((m) =>
+                        DateTime.fromISO(m.date.toString(), { zone: "utc" }).toISODate() === today
+                    );
+
+                    // Converter todayMenuData para Menu com date no tipo Date para evitar erro de tipo
+                    const todayMenu = todayMenuData
+                        ? {
+                            ...todayMenuData,
+                            date: new Date(todayMenuData.date), // Converte date de volta para Date
+                        }
+                        : null;
+
+                    setMenu(todayMenu); // Ajuste para usar Menu | null com date do tipo Date
+                }
+            } catch (err) {
+                console.log("Erro ao buscar o menu:", err);
+                if (err instanceof AxiosError) {
+                    alert(err.response?.data?.message || "Erro ao buscar o menu.");
+                }
             }
-
-            // Converta as datas e filtre para encontrar o menu de hoje
-            const today = new Date();
-            const todayString = today.toISOString().split('T')[0]; 
-            console.log(today.toISOString())
-
-            const todayMenu = res.data.menus
-                .map((m) => ({ ...m, date: new Date(m.date) })) 
-                .find((m) => m.date.toISOString().split('T')[0] === todayString); 
-
-            setMenu(todayMenu || null); 
         })();
-    },[]);
+    }, []);
+
+
 
 
     return (
@@ -95,11 +109,11 @@ export default function Home() {
                 <Stack flexDirection={"column"} width={"100%"} padding={"30px"}>
                     <Box sx={{ border: "7px solid #0C482E", height: "600px", width: "100%", borderRadius: "10px" }}>
                         {menu ? (
-                            <p>{menu.date.toLocaleDateString()}</p> 
-
+                            <p>{new Date(menu.date.getTime() + 24 * 60 * 60 * 1000).toLocaleDateString()}</p>
                         ) : (
-                            <p>Nenhum cardápio disponível para hoje.</p> 
+                            <p>Nenhum cardápio disponível para hoje.</p>
                         )}
+
                     </Box>
                 </Stack>
             </Stack>

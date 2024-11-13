@@ -22,7 +22,12 @@ type MenuResponseType = {
     menus: MenuInfo[]
 }
 
-const formatDate = (data: Date) => ((data.getDate() )) + "/" + ((data.getMonth() + 1)) + "/" + data.getFullYear() 
+const formatDate = (data: Date) => {
+    const dateWithOffset = new Date(data);
+    dateWithOffset.setDate(dateWithOffset.getDate() + 1); // Adiciona um dia
+    return dateWithOffset.getDate() + "/" + (dateWithOffset.getMonth() + 1) + "/" + dateWithOffset.getFullYear();
+};
+
 
 export default function MenuList() {
     document.title = "Cardápios"
