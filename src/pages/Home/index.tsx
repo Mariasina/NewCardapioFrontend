@@ -38,7 +38,7 @@ export type Ingredient = {
 
 type MenuResponse = {
     message: string;
-    menus: Menu[];
+    menu: Menu;
 };
 
 export default function Home() {
@@ -55,28 +55,17 @@ export default function Home() {
         navigate("/login");
     }
 
-
     useEffect(() => {
         (async () => {
             try {
-                const res = await api.get<MenuResponse>("/menu", getAuth(token));
+                // Obter a data de hoje em UTC no formato 'YYYY-MM-DD'
+                const today = DateTime.utc().toISODate();
+
+                // Fazer a requisição para a rota /menuInfo/:date
+                const res = await api.get<MenuResponse>(`/menuInfo/${today}`, getAuth(token));
 
                 if (res && res.data) {
-                    // Obter a data de hoje em UTC no formato 'YYYY-MM-DD'
-                    const today = DateTime.utc().toISODate();
-
-                    // Encontrar o menu de hoje
-                    const todayMenuData = res.data.menus.find((m) =>
-                        DateTime.fromISO(m.date.toString(), { zone: "utc" }).toISODate() === today
-                    );
-
-                    // Converter todayMenuData para Menu com date no tipo Date para evitar erro de tipo
-                    const todayMenu = todayMenuData
-                        ? {
-                            ...todayMenuData,
-                            date: new Date(todayMenuData.date), // Converte date de volta para Date
-                        }
-                        : null;
+                    const todayMenu = res.data.menu;
 
                     setMenu(todayMenu); // Ajuste para usar Menu | null com date do tipo Date
                 }
@@ -87,10 +76,12 @@ export default function Home() {
                 }
             }
         })();
-    }, []);
+    }, [token]); // Dependência de token
 
-
-
+    // Logar o valor de menu após ser atualizado
+    useEffect(() => {
+        console.log("Menu atual:", menu);
+    }, [menu]);
 
     return (
         <>
@@ -117,12 +108,10 @@ export default function Home() {
                                         <h1>{item.name}</h1>
                                     </div>
                                 )}
-
                             </>
                         ) : (
                             <p>Nenhum cardápio disponível para hoje.</p>
                         )}
-
                     </Box>
                 </Stack>
             </Stack>
