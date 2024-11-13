@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { Box, Stack } from "@mui/material";
 import AnimatedTitle from "../../components/AnimatedTitle";
 import { useEffect, useState } from "react";
-import { api, getAuth } from "../../api";
+import { api, getAuth } from "../../api/index.ts";
 import { AxiosError } from "axios";
 import { DefaultResponse } from "../../types";
 import Navbar from "../../components/Navbar";

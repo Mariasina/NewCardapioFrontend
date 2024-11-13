@@ -2,7 +2,7 @@ import { Box, Button, Stack, TextField, Typography } from "@mui/material";
 import { GreenPanel, LoginImage } from "./styles";
 import LoginImg from "../../assets/img/login_img.svg";
 import { useState } from "react";
-import { api } from "../../api";
+import { api } from "../../api/index.ts";
 import { AxiosError } from "axios";
 import { useNavigate } from "react-router-dom";
 import { DefaultResponse } from "../../types";

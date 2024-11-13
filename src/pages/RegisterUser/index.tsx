@@ -3,7 +3,7 @@ import { MainPanel, PicturePanel, RegisterImg } from "./styles";
 import registerImg from "../../assets/img/register-user-img.png"
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
-import { api } from "../../api";
+import { api } from "../../api/index.ts";
 import { AxiosError } from "axios";
 import { useJwt } from "react-jwt";
 import { JwtPayload } from "../../utils/jwt.utils";

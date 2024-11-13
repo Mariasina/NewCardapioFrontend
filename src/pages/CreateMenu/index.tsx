@@ -1,7 +1,7 @@
-import { Box, Fab, Grid2 as Grid, Stack, Typography } from "@mui/material";
+import { Box, Button, Fab, Grid2 as Grid, Stack, Typography } from "@mui/material";
 import RestaurantForm from "./components/RestaurantForm";
 import { useEffect, useState } from "react";
-import { api, getAuth } from "../../api";
+import { api, getAuth } from "../../api/index.ts";
 import { useJwt } from "react-jwt";
 import { useNavigate } from "react-router-dom";
 import { AxiosError } from "axios";
@@ -53,10 +53,8 @@ export default function CreateMenu() {
 
 
     const [dbIngredients, setDbIngredients] = useState<Ingredient[]>([])
-    const [localIngredients, setLocalIngredients] = useState<Ingredient[]>([])
 
     const [dbDishes, setDbDishes] = useState<Dish[]>([])
-    const [localDishes, setLocalDishes] = useState<Dish[]>([])
 
     const [localRestaurants, setLocalRestaurants] = useState<Restaurant[]>([])
 
@@ -93,6 +91,34 @@ export default function CreateMenu() {
     const handleAddRestaurant = () => {
         setLocalRestaurants((restaurants) => [...restaurants, {name: "Restaurant Name", description: "Description", dishes: [], id: ""}])
     }
+
+    const handleSubmit = async () => {
+        const restaurantsData = localRestaurants.map(restaurant => ({
+            id: restaurant.id,
+            name: restaurant.name,
+            description: restaurant.description,
+            dishes: restaurant.dishes.map(dish => ({
+                id: dish.id,
+                name: dish.name,
+                ingredients: dish.ingredients.map(ingredient => ({
+                    id: ingredient.id,
+                    name: ingredient.name,
+                    hasGluten: ingredient.hasGluten,
+                    isAnimal: ingredient.isAnimal,
+                    isMeat: ingredient.isMeat,
+                }))
+            }))
+        }));
+    
+        // Send to backend
+        try {
+            const res = await api.post("/restaurant", { restaurants: restaurantsData }, getAuth(token));
+            alert("Data saved successfully");
+        } catch (err) {
+            alert((err as AxiosError).message);
+        }
+    };
+    
 
 
     return (
@@ -143,6 +169,9 @@ export default function CreateMenu() {
                     >
                         <span className="material-symbols-outlined">add</span>
                     </Fab>
+                    <Button variant="contained" onClick={handleSubmit}>
+                        Submit Menu Data
+                    </Button>
                 </Stack>
             </Stack>
         </>

@@ -8,7 +8,7 @@ import AnimatedTitle from "../../components/AnimatedTitle";
 import { Link, useNavigate } from "react-router-dom";
 import { useJwt } from "react-jwt";
 import { useEffect, useState } from "react";
-import { api, getAuth } from "../../api";
+import { api, getAuth } from "../../api/index.ts";
 import { AxiosError } from "axios";
 import { DefaultResponse } from "../../types";
 import { JwtPayload } from "../../utils/jwt.utils";

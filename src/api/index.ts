@@ -1,7 +1,9 @@
 import axios from "axios";
 
+const apiUrl = import.meta.env.VITE_API_URL
 
 export const getAuth = (token: string | null)  => {
+    console.log(apiUrl)
     return !token ? {} : {
         headers: {
             Authorization: `Bearer ${token}`
@@ -10,5 +12,5 @@ export const getAuth = (token: string | null)  => {
 }
 
 export const api = axios.create({
-    baseURL: "http://localhost:8080"
+    baseURL: apiUrl
 })

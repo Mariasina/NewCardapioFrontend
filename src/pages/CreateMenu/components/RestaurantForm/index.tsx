@@ -21,13 +21,13 @@ import boi from "../../../../assets/img/boi.svg";
 import carne from "../../../../assets/img/carne.svg";
 import gluten from "../../../../assets/img/gluten.svg";
 import { Dish, Ingredient, Restaurant } from "../..";
-import { api, getAuth } from "../../../../api";
+import { api, getAuth } from "../../../../api/index.ts";
 import { AxiosError } from "axios";
 
 // Types
 type DishesFieldProps = {
-    dbDishes: Dish[],
-    dbIngredients: Ingredient[],
+    localDishes: Dish[],
+    setLocalDishes: React.Dispatch<React.SetStateAction<Dish[]>>
 }
 
 
@@ -42,6 +42,8 @@ type IngredientsFieldProps = {
     localIngredients: Ingredient[],
     updateIngredientProperty: (index: number, property: 'isMeat' | 'isAnimal' | 'hasGluten', value: boolean) => void,
 }
+
+
 
 const IngredientsField = ({ localIngredients, updateIngredientProperty }: IngredientsFieldProps) => {
     return (
@@ -77,13 +79,12 @@ const IngredientsField = ({ localIngredients, updateIngredientProperty }: Ingred
 
 
 // DishesField Component
-const DishesField = ({ dbDishes, dbIngredients }: DishesFieldProps) => {
+const DishesField = ({localDishes, setLocalDishes}: DishesFieldProps) => {
     const [openAddDish, setOpenAddDish] = useState(false);
     const [openAddIngredient, setOpenAddIngredient] = useState(false);
     const [modalDish, setModalDish] = useState<Dish | string>("");
     const [modalIngredient, setModalIngredient] = useState<Ingredient | string>("");
     const [modalIngredientDishIndex, setModalDishIndex] = useState<number | undefined>();
-    const [localDishes, setLocalDishes] = useState<Dish[]>([]);
     const [dbDishesState, setDbDishes] = useState<Dish[]>([]);
     const [dbIngredientsState, setDbIngredients] = useState<Ingredient[]>([]);
 
@@ -220,6 +221,15 @@ export default function RestaurantForm({ restaurant, setRestaurants, dbDishes, d
     const [title, setTitle] = useState(restaurant.name);
     const [description, setDescription] = useState(restaurant.description);
     const [step, setStep] = useState(0);
+    const [localDishes, setLocalDishes] = useState<Dish[]>([])
+
+    useEffect(() => {
+        setRestaurants(restaurants => {
+            const list = restaurants.filter(x => x.name != restaurant.name && x.description != restaurant.description);
+
+            return [...list, { name: title, description: description.trim(), dishes: localDishes, id: ""}]
+        })
+    }, [title, description, step, localDishes])
 
     const handleTextAreaInput = (e: React.FormEvent<HTMLTextAreaElement>) => {
         const element = e.currentTarget;
@@ -247,7 +257,7 @@ export default function RestaurantForm({ restaurant, setRestaurants, dbDishes, d
             )}
 
             {step > 1 && (
-                <DishesField dbIngredients={dbIngredients} dbDishes={dbDishes} />
+                <DishesField localDishes={localDishes} setLocalDishes={setLocalDishes}/>
             )}
         </Stack>
     );
