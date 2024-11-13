@@ -109,7 +109,16 @@ export default function Home() {
                 <Stack flexDirection={"column"} width={"100%"} padding={"30px"}>
                     <Box sx={{ border: "7px solid #0C482E", height: "600px", width: "100%", borderRadius: "10px" }}>
                         {menu ? (
-                            <p>{new Date(menu.date.getTime() + 24 * 60 * 60 * 1000).toLocaleDateString()}</p>
+                            <>
+                                <p>{new Date(menu.date.getTime() + 24 * 60 * 60 * 1000).toLocaleDateString()}</p>
+
+                                {menu.restaurants.map((item, index) => 
+                                    <div key={index}>
+                                        <h1>{item.name}</h1>
+                                    </div>
+                                )}
+
+                            </>
                         ) : (
                             <p>Nenhum cardápio disponível para hoje.</p>
                         )}
