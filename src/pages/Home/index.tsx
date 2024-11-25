@@ -5,7 +5,6 @@ import AnimatedTitle from "../../components/AnimatedTitle";
 import { useEffect, useState } from "react";
 import { api, getAuth } from "../../api/index.ts";
 import { AxiosError } from "axios";
-import { DefaultResponse } from "../../types";
 import Navbar from "../../components/Navbar";
 import { JwtPayload } from "../../utils/jwt.utils";
 import { DateTime } from "luxon";
@@ -101,7 +100,7 @@ export default function Home() {
                     <Box sx={{ border: "7px solid #0C482E", height: "600px", width: "100%", borderRadius: "10px" }}>
                         {menu ? (
                             <>
-                                <p>{new Date(menu.date.getTime() + 24 * 60 * 60 * 1000).toLocaleDateString()}</p>
+                                <p>{new Date(menu.date).toLocaleDateString()}</p>
 
                                 {menu.restaurants.map((item, index) => 
                                     <div key={index}>

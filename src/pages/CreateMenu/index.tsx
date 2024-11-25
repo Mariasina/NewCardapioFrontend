@@ -1,4 +1,4 @@
-import { Box, Button, Fab, Grid2 as Grid, Stack, Typography } from "@mui/material";
+import { Button, Fab, Grid2 as Grid, Stack, Typography } from "@mui/material";
 import RestaurantForm from "./components/RestaurantForm";
 import { useEffect, useState } from "react";
 import { api, getAuth } from "../../api/index.ts";
@@ -7,6 +7,7 @@ import { useNavigate } from "react-router-dom";
 import { AxiosError } from "axios";
 import { DefaultResponse } from "../../types";
 import { JwtPayload } from "../../utils/jwt.utils";
+import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 
 export type Restaurant = {
     id: string,
@@ -40,6 +41,8 @@ type IngredientResponse = {
 }
 
 export default function CreateMenu() {
+    const [date, setDate] = useState<Date>(new Date())
+
     const token = localStorage.getItem("token")
 
     const { isExpired } = useJwt<JwtPayload>(token ?? "")
@@ -112,7 +115,7 @@ export default function CreateMenu() {
     
         // Send to backend
         try {
-            const res = await api.post("/restaurant", { restaurants: restaurantsData }, getAuth(token));
+            const res = await api.post("/menu", { date: `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`, restaurants: restaurantsData }, getAuth(token));
             alert("Data saved successfully");
         } catch (err) {
             alert((err as AxiosError).message);
@@ -172,6 +175,7 @@ export default function CreateMenu() {
                     <Button variant="contained" onClick={handleSubmit}>
                         Submit Menu Data
                     </Button>
+                    <DatePicker label="Basic date picker" onChange={(e) => setDate(e?.toDate() || new Date())}/>
                 </Stack>
             </Stack>
         </>

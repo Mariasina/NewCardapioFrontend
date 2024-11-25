@@ -56,7 +56,7 @@ export default function MenuList() {
 
             setMenus(menus)
         })()
-    });
+    }, []);
 
     return (
         <>
