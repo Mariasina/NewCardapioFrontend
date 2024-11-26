@@ -96,7 +96,19 @@ export default function CreateMenu() {
     }
 
     const handleSubmit = async () => {
-        const restaurantsData = localRestaurants.map(restaurant => ({
+        // Validate restaurants before submitting
+        const validRestaurants = localRestaurants.filter(restaurant => 
+            restaurant.name.trim() !== "" && 
+            restaurant.description.trim() !== "" && 
+            restaurant.dishes.length > 0
+        );
+    
+        if (validRestaurants.length === 0) {
+            alert("Please add at least one complete restaurant");
+            return;
+        }
+    
+        const restaurantsData = validRestaurants.map(restaurant => ({
             id: restaurant.id,
             name: restaurant.name,
             description: restaurant.description,
@@ -115,7 +127,10 @@ export default function CreateMenu() {
     
         // Send to backend
         try {
-            const res = await api.post("/menu", { date: `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`, restaurants: restaurantsData }, getAuth(token));
+            const res = await api.post("/menu", { 
+                date: `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`, 
+                restaurants: restaurantsData 
+            }, getAuth(token));
             alert("Data saved successfully");
         } catch (err) {
             alert((err as AxiosError).message);

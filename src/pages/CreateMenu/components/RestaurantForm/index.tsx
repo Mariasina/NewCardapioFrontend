@@ -225,11 +225,13 @@ export default function RestaurantForm({ restaurant, setRestaurants, dbDishes, d
 
     useEffect(() => {
         setRestaurants(restaurants => {
-            const list = restaurants.filter(x => x.name != restaurant.name && x.description != restaurant.description);
-
-            return [...list, { name: title, description: description.trim(), dishes: localDishes, id: ""}]
+            return restaurants.map(r => 
+                r.name === restaurant.name && r.description === restaurant.description
+                    ? { ...r, name: title, description: description.trim(), dishes: localDishes, id: r.id }
+                    : r
+            );
         })
-    }, [title, description, step, localDishes])
+    }, [title, description, step, localDishes, restaurant.name, restaurant.description])
 
     const handleTextAreaInput = (e: React.FormEvent<HTMLTextAreaElement>) => {
         const element = e.currentTarget;

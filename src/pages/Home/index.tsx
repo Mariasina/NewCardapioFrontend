@@ -70,9 +70,6 @@ export default function Home() {
                 }
             } catch (err) {
                 console.log("Erro ao buscar o menu:", err);
-                if (err instanceof AxiosError) {
-                    alert(err.response?.data?.message || "Erro ao buscar o menu.");
-                }
             }
         })();
     }, [token]); // Dependência de token
