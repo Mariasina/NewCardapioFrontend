@@ -8,6 +8,7 @@ import { AxiosError } from "axios";
 import Navbar from "../../components/Navbar";
 import { JwtPayload } from "../../utils/jwt.utils";
 import { DateTime } from "luxon";
+import { Title, TitleContainer } from "./styles.tsx";
 
 export type Menu = {
     date: Date;
@@ -100,11 +101,27 @@ export default function Home() {
                     <Box sx={{ border: "7px solid #0C482E", height: "600px", width: "100%", borderRadius: "10px" }}>
                         {menu ? (
                             <>
-                                <p>{new Date(menu.date).toLocaleDateString()}</p>
+                                <p>{(new Date(new Date(menu.date).setDate(new Date(menu.date).getDate() + 1))).toLocaleDateString()}</p>
 
-                                {menu.restaurants.map((item, index) => 
+
+                                {menu.restaurants.map((menuItem, index) => 
                                     <div key={index}>
-                                        <h1>{item.name}</h1>
+                                        <TitleContainer>
+                                            <Title>{menuItem.name}</Title>
+                                        </TitleContainer>
+                                        <p>{menuItem.description}</p>
+                                        {menuItem.dishes.map((dishItem, index) => 
+                                            <Stack flexDirection={"row"} padding={"5px"} key={index}>
+                                                {dishItem.ingredients.map((ingredientItem, index) => 
+                                                    <div key={index}>
+                                                        {ingredientItem.hasGluten ? <p>Gluten</p> : null}
+                                                        {ingredientItem.isAnimal ? <p>Derivado animal</p> : null}
+                                                        {ingredientItem.isMeat ? <p>Carne</p> : null}
+                                                    </div>
+                                                )}
+                                                <h3>{dishItem.name}</h3>
+                                            </Stack>
+                                        )}
                                     </div>
                                 )}
                             </>
