@@ -1,6 +1,6 @@
 import { useJwt } from "react-jwt";
 import { useNavigate } from "react-router-dom";
-import { Box, Stack } from "@mui/material";
+import { Box, Stack, Typography } from "@mui/material";
 import AnimatedTitle from "../../components/AnimatedTitle";
 import { useEffect, useState } from "react";
 import { api, getAuth } from "../../api/index.ts";
@@ -9,6 +9,9 @@ import Navbar from "../../components/Navbar";
 import { JwtPayload } from "../../utils/jwt.utils";
 import { DateTime } from "luxon";
 import { Title, TitleContainer } from "./styles.tsx";
+import gluten from "../../assets/img/GlutenIconGreen.png"
+import animal from "../../assets/img/CowIconGreen.png"
+import meat from "../../assets/img/MeatIconGreen.png"
 
 export type Menu = {
     date: Date;
@@ -95,37 +98,48 @@ export default function Home() {
                     </Stack>
                 </Stack>
                 <Stack flexDirection={"column"} width={"100%"} padding={"30px"}>
-                    <Box sx={{ border: "7px solid #0C482E", height: "600px", width: "100%", borderRadius: "10px" }}>
                         {menu ? (
                             <>
-                                <p>{(new Date(new Date(menu.date).setDate(new Date(menu.date).getDate() + 1))).toLocaleDateString()}</p>
-
-
-                                {menu.restaurants.map((menuItem, index) => 
-                                    <div key={index}>
-                                        <TitleContainer>
-                                            <Title>{menuItem.name}</Title>
-                                        </TitleContainer>
-                                        <p>{menuItem.description}</p>
-                                        {menuItem.dishes.map((dishItem, index) => 
-                                            <Stack flexDirection={"row"} padding={"5px"} key={index}>
-                                                {dishItem.ingredients.map((ingredientItem, index) => 
-                                                    <div key={index}>
-                                                        {ingredientItem.hasGluten ? <p>Gluten</p> : null}
-                                                        {ingredientItem.isAnimal ? <p>Derivado animal</p> : null}
-                                                        {ingredientItem.isMeat ? <p>Carne</p> : null}
-                                                    </div>
+                                <Box sx={{ border: "7px solid #115437", height: "", width: "100%", borderRadius: "10px", justifyContent: "space-between"}}>
+                                    <Stack justifyContent={"space-between"} flexDirection={"row"} flexWrap={"wrap"} gap={"70px"} width={"100%"} padding={"20px 40px"}>
+                                        {menu.restaurants.map((menuItem, index) => 
+                                            <Stack key={index} width={"400px"} alignItems={"center"}>
+                                                <TitleContainer>
+                                                    <Title>{menuItem.name}</Title>
+                                                </TitleContainer>
+                                                <p>{menuItem.description}</p>
+                                                <Stack>
+                                                {menuItem.dishes.map((dishItem, index) => 
+                                                    <Stack flexDirection={"row"} alignItems={"center"} gap={"5px"}  key={index}>
+                                                        {dishItem.ingredients.map((ingredientItem, index) => 
+                                                            <Stack key={index}>
+                                                                {ingredientItem.hasGluten ? <img src={gluten}></img> : null}
+                                                                {ingredientItem.isAnimal ? <img src={animal}></img> : null}
+                                                                {ingredientItem.isMeat ? <img src={meat}></img> : null}
+                                                            </Stack>
+                                                        )}
+                                                        <Typography fontFamily={"Marcellus"} fontSize={"1.1rem"}>{dishItem.name}</Typography>
+                                                    </Stack>
                                                 )}
-                                                <h3>{dishItem.name}</h3>
+                                                </Stack>
                                             </Stack>
                                         )}
-                                    </div>
-                                )}
+                                    </Stack>
+                                    <Stack alignItems={"center"} justifyContent={"space-between"} flexDirection={"row"}>
+                                        <Box sx={{backgroundColor: "#115437", width: "500px"}}>
+                                        </Box>
+                                        <Box sx={{backgroundColor: "#115437", border: "7px solid #115437", borderRadius: "50px 50px 0px 0px", width: "200px", display: "flex", justifyContent: "center"}}>
+                                            <Typography fontFamily={"Margarine"} fontSize={"1.3rem"} color="white">{(new Date(new Date(menu.date).setDate(new Date(menu.date).getDate() + 1))).toLocaleDateString()}</Typography>
+                                        </Box>
+                                        <Box sx={{backgroundColor: "#115437", border: "7px solid #115437", borderRadius: "50px 0px 0px 0px", width: "500px", display: "flex", justifyContent: "center"}}>
+                                            <Typography fontFamily={"Margarine"} fontSize={"1.3rem"} color="white">{(new Date(new Date(menu.date).setDate(new Date(menu.date).getDate() + 1))).toLocaleDateString()}</Typography>
+                                        </Box>
+                                    </Stack>
+                                </Box>
                             </>
                         ) : (
                             <p>Nenhum cardápio disponível para hoje.</p>
                         )}
-                    </Box>
                 </Stack>
             </Stack>
         </>

@@ -64,7 +64,7 @@ export default function CreateMenu() {
     useEffect(() => {
         (async () => {
             const res = await api.get<DishResponse>("/dish", getAuth(token)).catch((err: AxiosError<DefaultResponse>) => {
-                alert(err.response?.data.message)
+                // alert(err.response?.data.message)
             })
             
             if (!res) {
@@ -80,7 +80,7 @@ export default function CreateMenu() {
     useEffect(() => {
         (async () => {
             const res = await api.get<IngredientResponse>("/ingredient", getAuth(token)).catch((err: AxiosError<DefaultResponse>) => {
-                alert(err.response?.data.message)
+                // alert(err.response?.data.message)
             })
 
             if (!res) {

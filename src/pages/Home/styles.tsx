@@ -22,7 +22,7 @@ export const Title = styled("p")`
     background-color: transparent;
     border-radius: 5px;
     font-family: "Margarine";
-    font-size: 1.8em;
+    font-size: 1.8rem;
     color: #115437;
     padding: 5px 5px;
 
