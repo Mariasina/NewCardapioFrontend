@@ -132,7 +132,7 @@ export default function Home() {
                                             <Typography fontFamily={"Margarine"} fontSize={"1.3rem"} color="white">{(new Date(new Date(menu.date).setDate(new Date(menu.date).getDate() + 1))).toLocaleDateString()}</Typography>
                                         </Box>
                                         <Box sx={{backgroundColor: "#115437", border: "7px solid #115437", borderRadius: "50px 0px 0px 0px", width: "500px", display: "flex", justifyContent: "center"}}>
-                                            <Typography fontFamily={"Margarine"} fontSize={"1.3rem"} color="white">{(new Date(new Date(menu.date).setDate(new Date(menu.date).getDate() + 1))).toLocaleDateString()}</Typography>
+                                            <Typography fontFamily={"Marcellus"} fontSize={"1srem"} color="white">Derivados de Animais</Typography>
                                         </Box>
                                     </Stack>
                                 </Box>
