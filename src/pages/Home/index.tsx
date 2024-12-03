@@ -8,10 +8,13 @@ import { AxiosError } from "axios";
 import Navbar from "../../components/Navbar";
 import { JwtPayload } from "../../utils/jwt.utils";
 import { DateTime } from "luxon";
-import { Title, TitleContainer } from "./styles.tsx";
-import gluten from "../../assets/img/GlutenIconGreen.png"
-import animal from "../../assets/img/CowIconGreen.png"
-import meat from "../../assets/img/MeatIconGreen.png"
+import { FoodIcon, Title, TitleContainer } from "./styles.tsx";
+import glutenGreen from "../../assets/img/GlutenIconGreen.png"
+import animalGreen from "../../assets/img/CowIconGreen.png"
+import meatGreen from "../../assets/img/MeatIconGreen.png"
+import glutenWhite from "../../assets/img/GlutenIconWhite.png"
+import animalWhite from "../../assets/img/CowIconWhite.png"
+import meatWhite from "../../assets/img/MeatIconWhite.png"
 import IngredientTooltip from "./components/IngredientTooltip/index.tsx";
 import { useLanguage } from "../../languageContext/LanguageContext.tsx";
 
@@ -130,14 +133,14 @@ export default function Home() {
                                                 <Stack>
                                                 {menuItem.dishes.map((dishItem, index) => 
                                                     <IngredientTooltip ingredients={dishItem.ingredients} key={index}>
-                                                        <Stack flexDirection={"row"} alignItems={"center"} gap={"5px"}  key={index}>
-                                                            <Stack key={index}>
+                                                        <Stack flexDirection={"row"} alignItems={"center"} gap={"5px"} key={index}>
+                                                            <Stack flexDirection={"row"} gap={"3px"} key={index} width={"70px"}>
                                                                 {(() => {
                                                                     const {hasGluten, isAnimal, isMeat} = getDishInfos(dishItem.ingredients)
                                                                     return <>
-                                                                        {hasGluten && <img src={gluten}></img>}
-                                                                        {isAnimal && <img src={animal}></img>}
-                                                                        {isMeat && <img src={meat}></img>}
+                                                                        {hasGluten && <FoodIcon src={glutenGreen}></FoodIcon>}
+                                                                        {isAnimal && <FoodIcon src={animalGreen}></FoodIcon>}
+                                                                        {isMeat && <FoodIcon src={meatGreen}></FoodIcon>}
                                                                     </>
                                                                 })()}
                                                             </Stack>
@@ -150,13 +153,23 @@ export default function Home() {
                                         )}
                                     </Stack>
                                     <Stack alignItems={"flex-end"} justifyContent={"space-between"} flexDirection={"row"}>
-                                        <Box sx={{backgroundColor: "#115437", width: "500px"}}>
-                                        </Box>
-                                        <Box sx={{backgroundColor: "#115437", border: "7px solid #115437", borderRadius: "50px 50px 0px 0px", width: "200px", display: "flex", justifyContent: "center"}}>
+                                        
+                                        <Box sx={{backgroundColor: "#115437", border: "7px solid #115437", borderRadius: "0px 30px 0px 0px", width: "200px", display: "flex", justifyContent: "center"}}>
                                             <Typography fontFamily={"Margarine"} fontSize={"1.3rem"} color="white">{(new Date(new Date(menu.date).setDate(new Date(menu.date).getDate()))).toLocaleDateString()}</Typography>
                                         </Box>
-                                        <Box sx={{backgroundColor: "#115437", border: "7px solid #115437", borderRadius: "50px 0px 0px 0px", width: "500px", display: "flex", justifyContent: "center"}}>
-                                            <Typography fontFamily={"Marcellus"} fontSize={"1srem"} color="white">Derivados de Animais</Typography>
+                                        <Box sx={{backgroundColor: "#115437", border: "7px solid #115437", borderRadius: "30px 0px 0px 0px", width: "540px", display: "flex", justifyContent: "space-between", flexWrap: "wrap", padding: "5px 15px"}}>
+                                            <Stack gap={"4px"} flexDirection={"row"} alignItems={"center"}>
+                                                <FoodIcon src={glutenWhite}></FoodIcon>
+                                                <Typography fontFamily={"Marcellus"} fontSize={"1rem"} color="white">Contém Gluten</Typography>
+                                            </Stack>
+                                            <Stack gap={"4px"} flexDirection={"row"} alignItems={"center"} >
+                                                <FoodIcon src={animalWhite}></FoodIcon>
+                                                <Typography fontFamily={"Marcellus"} fontSize={"1rem"} color="white">Derivados de Animais</Typography>
+                                            </Stack>
+                                            <Stack gap={"4px"} flexDirection={"row"} alignItems={"center"} >
+                                                <FoodIcon src={meatWhite}></FoodIcon>
+                                                <Typography fontFamily={"Marcellus"} fontSize={"1rem"} color="white">Contém Carne</Typography>
+                                            </Stack>
                                         </Box>
                                     </Stack>
                                 </Box>

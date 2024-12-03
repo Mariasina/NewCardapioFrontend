@@ -27,6 +27,9 @@ export const Title = styled("p")`
     padding: 5px 5px;
 
 `
-
+export const FoodIcon = styled("img")`
+    width: 17px;
+    height: 17px;
+`
 
 
