@@ -34,8 +34,8 @@ export default function IngredientTooltip({children, ingredients}: IngredientToo
                 <TooltipBox minWidth={"max-content"}>
                     <Typography variant="h6">Ingredient List</Typography>
                     <Stack gap={1} mt={2}>
-                        {ingredients.map(ingredient => 
-                            <Stack flexDirection={"row"} alignItems={"center"} gap={2}>
+                        {ingredients.map((ingredient, index) => 
+                            <Stack flexDirection={"row"} alignItems={"center"} gap={2} key={index}>
                                 <Typography fontSize={18}>{ingredient.name}</Typography>
                                 {ingredient.hasGluten && <img src={gluten}></img>}
                                 {ingredient.isAnimal && <img src={animal}></img>}

@@ -23,6 +23,7 @@ import gluten from "../../../../assets/img/gluten.svg";
 import { Dish, Ingredient, Restaurant } from "../..";
 import { api, getAuth } from "../../../../api/index.ts";
 import { AxiosError } from "axios";
+import { useLanguage } from "../../../../languageContext/LanguageContext.tsx";
 
 // Types
 type DishesFieldProps = {
@@ -80,6 +81,8 @@ const IngredientsField = ({ localIngredients, updateIngredientProperty }: Ingred
 
 // DishesField Component
 const DishesField = ({localDishes, setLocalDishes}: DishesFieldProps) => {
+    const {languageData: lang} = useLanguage()
+
     const [openAddDish, setOpenAddDish] = useState(false);
     const [openAddIngredient, setOpenAddIngredient] = useState(false);
     const [modalDish, setModalDish] = useState<Dish | string>("");
@@ -157,14 +160,15 @@ const DishesField = ({localDishes, setLocalDishes}: DishesFieldProps) => {
         <>
             <Modal open={openAddDish} onClose={() => setOpenAddDish(false)}>
                 <Box sx={modalStyle}>
-                    <Typography id="dish-modal-title" variant="h6">Add Dish</Typography>
+                    <Typography id="dish-modal-title" variant="h6">{lang.add_dish}</Typography>
                     <Autocomplete
                         disablePortal
                         value={modalDish}
                         options={dbDishesState}
                         getOptionLabel={(option) => typeof option === "string" ? option : option.name}
                         renderInput={(params) => <TextField {...params} label="Nome" />}
-                        onChange={(event, newValue) => setModalDish(newValue ?? "")}
+                        onChange={(_, newValue) => setModalDish(newValue ?? "")}
+                        onInputChange={(_, newValue) => setModalDish(newValue ?? "")}
                         freeSolo
                     />
                     <Button variant="outlined" sx={{ marginLeft: "auto" }} onClick={handleModalAddDish}>Add</Button>
@@ -173,14 +177,15 @@ const DishesField = ({localDishes, setLocalDishes}: DishesFieldProps) => {
 
             <Modal open={openAddIngredient} onClose={() => setOpenAddIngredient(false)}>
                 <Box sx={modalStyle}>
-                    <Typography id="ingredient-modal-title" variant="h6">Add Ingredient</Typography>
+                    <Typography id="ingredient-modal-title" variant="h6">{lang.add_ingredient}</Typography>
                     <Autocomplete
                         disablePortal
                         value={modalIngredient}
                         options={dbIngredientsState}
                         getOptionLabel={(option) => typeof option === "string" ? option : option.name}
                         renderInput={(params) => <TextField {...params} label="Nome" />}
-                        onChange={(event, newValue) => setModalIngredient(newValue ?? "")}
+                        onChange={(_, newValue) => setModalIngredient(newValue ?? "")}
+                        onInputChange={(_, newValue) => setModalIngredient(newValue ?? "")}
                         freeSolo
                     />
                     <Button variant="outlined" sx={{ marginLeft: "auto" }} onClick={handleModalAddIngredient}>Add</Button>
@@ -202,14 +207,14 @@ const DishesField = ({localDishes, setLocalDishes}: DishesFieldProps) => {
                             />
                             <Fab variant="extended" onClick={() => handleAddIngredient(index)}>
                                 <span className="material-symbols-outlined">add</span>
-                                <Typography>Add Ingredient</Typography>
+                                <Typography>{lang.add_ingredient}</Typography>
                             </Fab>
                         </AccordionDetails>
                     </Accordion>
                 ))}
                 <Fab variant="extended" sx={{ width: "fit-content", marginTop: "30px" }} onClick={handleAddDish}>
                     <span className="material-symbols-outlined">add</span>
-                    <Typography>Add Dish</Typography>
+                    <Typography>{lang.add_dish}</Typography>
                 </Fab>
             </Stack>
         </>
@@ -237,6 +242,7 @@ export default function RestaurantForm({ restaurant, setRestaurants, dbDishes, d
         const element = e.currentTarget;
         element.style.height = 'auto';
         element.style.height = `${element.scrollHeight}px`;
+       element.value = element.value.replace(/\n/g, '')
     };
 
     return (

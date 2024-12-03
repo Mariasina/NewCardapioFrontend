@@ -25,7 +25,7 @@ type MenuResponseType = {
 
 const formatDate = (data: Date) => {
     const dateWithOffset = new Date(data);
-    dateWithOffset.setDate(dateWithOffset.getDate() + 1); // Adiciona um dia
+    dateWithOffset.setDate(dateWithOffset.getDate());
     return dateWithOffset.getDate() + "/" + (dateWithOffset.getMonth() + 1) + "/" + dateWithOffset.getFullYear();
 };
 
@@ -96,7 +96,7 @@ export default function MenuList() {
                         <CardContainer>
                             {menus.map((item, index) =>
 
-                                <Stack alignItems={"center"} gap={"10px"}>
+                                <Stack alignItems={"center"} gap={"10px"} key={index}>
                                     <Typography fontFamily={"Marcellus"} fontSize={"1.1rem"}>{formatDate(item.date)}</Typography>
                                     <MenuCard key={index} />
                                 </Stack>

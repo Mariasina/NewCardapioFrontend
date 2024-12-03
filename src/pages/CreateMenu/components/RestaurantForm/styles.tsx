@@ -1,7 +1,7 @@
 import { styled } from "@mui/material";
 
 export const TitleInputContainer = styled("div")`
-    width: fit-content;
+    width: 100%;
     position: relative;
 
     &::before {
@@ -26,6 +26,7 @@ export const TitleInput = styled("input")`
     font-size: 1.8em;
     color: #115437;
     padding: 5px 5px;
+    width: 100%;
 
 `
 
@@ -42,6 +43,7 @@ export const DescriptionInput = styled("textarea")`
     max-height: 300px;
     min-height: 20px;
     height: auto;
+    width: 100%;
     width: auto;
 `
 

@@ -1,4 +1,4 @@
-import { Button, Fab, Grid2 as Grid, Stack, Typography } from "@mui/material";
+import { Box, Button, Fab, Grid2 as Grid, Stack, Typography } from "@mui/material";
 import RestaurantForm from "./components/RestaurantForm";
 import { useEffect, useState } from "react";
 import { api, getAuth } from "../../api/index.ts";
@@ -8,6 +8,7 @@ import { AxiosError } from "axios";
 import { DefaultResponse } from "../../types";
 import { JwtPayload } from "../../utils/jwt.utils";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
+import { useLanguage } from "../../languageContext/LanguageContext.tsx";
 
 export type Restaurant = {
     id: string,
@@ -45,6 +46,8 @@ export default function CreateMenu() {
 
     const token = localStorage.getItem("token")
 
+    const { languageData: lang } = useLanguage()
+
     const { isExpired } = useJwt<JwtPayload>(token ?? "")
 
     const navigate = useNavigate()
@@ -66,7 +69,7 @@ export default function CreateMenu() {
             const res = await api.get<DishResponse>("/dish", getAuth(token)).catch((err: AxiosError<DefaultResponse>) => {
                 // alert(err.response?.data.message)
             })
-            
+
             if (!res) {
                 return
             }
@@ -74,7 +77,7 @@ export default function CreateMenu() {
             setDbDishes(res.data.dishes)
         })()
 
-        
+
     }, []);
 
     useEffect(() => {
@@ -92,22 +95,22 @@ export default function CreateMenu() {
     }, [])
 
     const handleAddRestaurant = () => {
-        setLocalRestaurants((restaurants) => [...restaurants, {name: "Restaurant Name", description: "Description", dishes: [], id: ""}])
+        setLocalRestaurants((restaurants) => [...restaurants, { name: lang.restaurant_name, description: lang.restaurant_description, dishes: [], id: "" }])
     }
 
     const handleSubmit = async () => {
         // Validate restaurants before submitting
-        const validRestaurants = localRestaurants.filter(restaurant => 
-            restaurant.name.trim() !== "" && 
-            restaurant.description.trim() !== "" && 
+        const validRestaurants = localRestaurants.filter(restaurant =>
+            restaurant.name.trim() !== "" &&
+            restaurant.description.trim() !== "" &&
             restaurant.dishes.length > 0
         );
-    
+
         if (validRestaurants.length === 0) {
             alert("Please add at least one complete restaurant");
             return;
         }
-    
+
         const restaurantsData = validRestaurants.map(restaurant => ({
             id: restaurant.id,
             name: restaurant.name,
@@ -124,19 +127,21 @@ export default function CreateMenu() {
                 }))
             }))
         }));
-    
+
         // Send to backend
         try {
-            const res = await api.post("/menu", { 
-                date: `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`, 
-                restaurants: restaurantsData 
+            const res = await api.post("/menu", {
+                date: `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`,
+                restaurants: restaurantsData
             }, getAuth(token));
             alert("Data saved successfully");
+            
+            navigate("/menus")
         } catch (err) {
             alert((err as AxiosError).message);
         }
     };
-    
+
 
 
     return (
@@ -148,50 +153,62 @@ export default function CreateMenu() {
                 justifyContent={"space-around"}
                 gap={2}
                 padding={10}
-               
+
             >
-                <Grid container spacing={10}  width={"100%"}>
-                    { localRestaurants.map((value, index) => 
-                    <Grid size={{xs: 12, md: 6, lg: 4}}>
-                            <RestaurantForm 
+                <Grid container spacing={10} width={"100%"} mt={5}>
+                    {localRestaurants.map((value, index) =>
+                        <Grid size={{ xs: 12, md: 6, lg: 4 }} minWidth={"min-content"}>
+                            <RestaurantForm
                                 restaurant={value}
                                 dbDishes={dbDishes}
                                 dbIngredients={dbIngredients}
                                 setRestaurants={setLocalRestaurants}
                                 key={index}
                             />
-                    </Grid>
+                        </Grid>
                     )}
-                   
+
                 </Grid>
 
-                <Stack
-                    flexDirection={"row"}
-                    alignItems={"center"}
-                    gap={3}
-                    position={"fixed"}
-                    top={"3%"} right={"3%"}
-                >
-                    <Typography>Add new Restaurant</Typography>
-                    <Fab
-                        color="inherit"
-                        sx={{
-                            backgroundColor:"#CCA67F",
 
-                            ":hover": {
-                                backgroundColor:"#dec4ab",
-                            }
+                <Stack
+                        flexDirection={"row"}
+                        alignItems={"center"}
+                        gap={3}
+                        position={"fixed"}
+                        top={"3%"}
+                        right={"3%"}
+                        zIndex={"99999999999"} // Keeps the component above the blur
+                        sx={{
+                            backgroundColor: "rgba(255, 255, 255)", // Optional to give your component a solid base
+                            borderRadius: "8px",
+                            padding: "8px 16px",
+                            boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.1)", // Adds a subtle shadow
                         }}
-                        aria-label="add"
-                        onClick={handleAddRestaurant}
                     >
-                        <span className="material-symbols-outlined">add</span>
-                    </Fab>
-                    <Button variant="contained" onClick={handleSubmit}>
-                        Submit Menu Data
-                    </Button>
-                    <DatePicker label="Basic date picker" onChange={(e) => setDate(e?.toDate() || new Date())}/>
-                </Stack>
+                        <Typography>{lang.add_new_restaurant}</Typography>
+                        <Fab
+                            color="inherit"
+                            sx={{
+                                backgroundColor: "#CCA67F",
+                                ":hover": {
+                                    backgroundColor: "#dec4ab",
+                                },
+                            }}
+                            aria-label="add"
+                            onClick={handleAddRestaurant}
+                        >
+                            <span className="material-symbols-outlined">add</span>
+                        </Fab>
+                        <Button variant="contained" onClick={handleSubmit}>
+                            {lang.submit_menu}
+                        </Button>
+                        <DatePicker
+                            label={lang.date_picker}
+                            onChange={(e) => setDate(e?.toDate() || new Date())}
+                        />
+                    </Stack>
+
             </Stack>
         </>
     )

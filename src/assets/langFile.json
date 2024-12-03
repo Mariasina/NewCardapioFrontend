@@ -54,6 +54,46 @@
             "name": "register",
             "pt": "Cadastrar",
             "en": "Register"   
+        },
+        {
+            "name": "submit_menu",
+            "pt": "Enviar Menu",
+            "en": "Submit Menu"   
+        },
+        {
+            "name": "add_new_restaurant",
+            "pt": "Adicionar Novo Restaurante",
+            "en": "Add New Restaurant"   
+        },
+        {
+            "name": "date_picker",
+            "pt": "Escolha a Data",
+            "en": "Choose a Date"   
+        },
+        {
+            "name": "restaurant_name",
+            "pt": "Nome do Restaurante",
+            "en": "Restaurant Name"   
+        },
+        {
+            "name": "restaurant_description",
+            "pt": "Descrição",
+            "en": "Description"   
+        },
+        {
+            "name": "add_dish",
+            "pt": "Adicionar Prato",
+            "en": "Add Dish"   
+        },
+        {
+            "name": "add_ingredient",
+            "pt": "Adicionar Ingrediente",
+            "en": "Add Ingredient"   
+        },
+        {
+            "name": "menu_unavailable",
+            "pt": "Nenhum cardapio encontrado para hoje!!",
+            "en": "No menu found for today!!"   
         }
     ]
 }

@@ -129,7 +129,7 @@ export default function Home() {
                                                 <p>{menuItem.description}</p>
                                                 <Stack>
                                                 {menuItem.dishes.map((dishItem, index) => 
-                                                    <IngredientTooltip ingredients={dishItem.ingredients}>
+                                                    <IngredientTooltip ingredients={dishItem.ingredients} key={index}>
                                                         <Stack flexDirection={"row"} alignItems={"center"} gap={"5px"}  key={index}>
                                                             <Stack key={index}>
                                                                 {(() => {
@@ -149,11 +149,11 @@ export default function Home() {
                                             </Stack>
                                         )}
                                     </Stack>
-                                    <Stack alignItems={"center"} justifyContent={"space-between"} flexDirection={"row"}>
+                                    <Stack alignItems={"flex-end"} justifyContent={"space-between"} flexDirection={"row"}>
                                         <Box sx={{backgroundColor: "#115437", width: "500px"}}>
                                         </Box>
                                         <Box sx={{backgroundColor: "#115437", border: "7px solid #115437", borderRadius: "50px 50px 0px 0px", width: "200px", display: "flex", justifyContent: "center"}}>
-                                            <Typography fontFamily={"Margarine"} fontSize={"1.3rem"} color="white">{(new Date(new Date(menu.date).setDate(new Date(menu.date).getDate() + 1))).toLocaleDateString()}</Typography>
+                                            <Typography fontFamily={"Margarine"} fontSize={"1.3rem"} color="white">{(new Date(new Date(menu.date).setDate(new Date(menu.date).getDate()))).toLocaleDateString()}</Typography>
                                         </Box>
                                         <Box sx={{backgroundColor: "#115437", border: "7px solid #115437", borderRadius: "50px 0px 0px 0px", width: "500px", display: "flex", justifyContent: "center"}}>
                                             <Typography fontFamily={"Marcellus"} fontSize={"1srem"} color="white">Derivados de Animais</Typography>
@@ -162,7 +162,7 @@ export default function Home() {
                                 </Box>
                             </>
                         ) : (
-                            <p>Nenhum cardápio disponível para hoje.</p>
+                            <p>{languageData.menu_unavailable}</p>
                         )}
                 </Stack>
             </Stack>
