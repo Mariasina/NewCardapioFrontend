@@ -3,9 +3,19 @@ import flag from "../../assets/img/flag-usa.svg"
 import flagBR from "../../assets/img/flag-brazil.svg"
 import { FormControl, MenuItem, Select } from "@mui/material";
 import { useState } from "react";
+import { useLanguage } from "../../languageContext/LanguageContext";
 
 function LanguageSelector() {
-    const [value, setValue] = useState("br")
+    const {changeLanguage, language} = useLanguage()
+
+    const [value, setValue] = useState(language)
+
+
+
+    const changeValue = (value: "PT" | "EN") => {
+        setValue(value)
+        changeLanguage(value)
+    }
 
     return (
         <>
@@ -14,7 +24,7 @@ function LanguageSelector() {
                     labelId="demo-simple-select-label"
                     id="demo-simple-select"
                     value={value}
-                    onChange={(e) => setValue(e.target.value)}
+                    onChange={(e) => changeValue(e.target.value as "PT" | "EN")}
                     variant="standard"
 
                     sx={{
@@ -25,8 +35,8 @@ function LanguageSelector() {
                         ':after': { borderBottomColor: 'white' },
                     }}
                 >
-                    <MenuItem value={"en"}><ImgFlag src={flag}/></MenuItem>
-                    <MenuItem value={"br"}><ImgFlag src={flagBR}/></MenuItem>
+                    <MenuItem value={"EN"}><ImgFlag src={flag}/></MenuItem>
+                    <MenuItem value={"PT"}><ImgFlag src={flagBR}/></MenuItem>
                 </Select>
             </FormControl>
         </>

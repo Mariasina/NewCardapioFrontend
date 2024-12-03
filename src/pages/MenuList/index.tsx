@@ -12,6 +12,7 @@ import { api, getAuth } from "../../api/index.ts";
 import { AxiosError } from "axios";
 import { DefaultResponse } from "../../types";
 import { JwtPayload } from "../../utils/jwt.utils";
+import { useLanguage } from "../../languageContext/LanguageContext.tsx";
 
 export type MenuInfo = {
     date: Date
@@ -33,6 +34,8 @@ export default function MenuList() {
     document.title = "Cardápios"
 
     const navigate = useNavigate()
+    const {languageData} = useLanguage()
+
     const token = localStorage.getItem("token")
     const { isExpired } = useJwt<JwtPayload>(token ?? "")
 
@@ -69,9 +72,9 @@ export default function MenuList() {
                             gap: "30px"
                         }
                     }}>
-                        <AnimatedTitle title={"Cardápios cadastrados"} />
+                        <AnimatedTitle title={languageData.registered_menus} />
                         <Stack flexDirection={"row"} alignItems={"center"} justifyContent={"center"} gap={2}>
-                            <Typography fontFamily={"Marcellus"} fontSize={"1.1rem"}>Adicionar Cardápio</Typography>
+                            <Typography fontFamily={"Marcellus"} fontSize={"1.1rem"}>{languageData.add_menu}</Typography>
                             <Link to={"/create-menu"} style={{
                                 textDecoration: "none",
                                 color: "black"

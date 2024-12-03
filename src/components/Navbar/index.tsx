@@ -12,10 +12,14 @@ import { useEffect, useState } from "react";
 import { Stack } from '@mui/material';
 import { JwtPayload } from '../../utils/jwt.utils';
 import { ImgLogo, ImgLogout, MenuLink, NavContainer, RightIcons, RightItens } from './styles';
+import { useLanguage } from '../../languageContext/LanguageContext';
 
 
 export default function Navbar() {
     const navigate = useNavigate();
+    const {languageData} = useLanguage()
+
+
     const token = localStorage.getItem("token");
     const { decodedToken, isExpired } = useJwt<JwtPayload>(token ?? "");
     const [anchorElNav, setAnchorElNav] = useState<null | HTMLElement>(null);
@@ -75,15 +79,15 @@ export default function Navbar() {
 
                             <Stack>
                                 <MenuLink>
-                                    <Link to="/" style={{ textDecoration: "none", color: "black" }}>Home</Link>
+                                    <Link to="/" style={{ textDecoration: "none", color: "black" }}>{languageData.navbar_home}</Link>
                                 </MenuLink>
                                 <MenuLink>
-                                    <Link to="/menus" style={{ textDecoration: "none", color: "black" }}>Cardápios</Link>
+                                    <Link to="/menus" style={{ textDecoration: "none", color: "black" }}>{languageData.navbar_menus}</Link>
                                 </MenuLink>
                                 {decodedToken?.isAdmin && (
                                     <>
                                         <MenuLink>
-                                            <Link to="/users" style={{ textDecoration: "none", color: "black" }}>Usuários</Link>
+                                            <Link to="/users" style={{ textDecoration: "none", color: "black" }}>{languageData.navbar_users}</Link>
                                         </MenuLink>
                                     </>
                                 )}
@@ -92,15 +96,15 @@ export default function Navbar() {
                     </Box>
                     <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
                         <MenuLink>
-                            <Link to="/" style={{ textDecoration: "none", color: "white" }}>Home</Link>
+                            <Link to="/" style={{ textDecoration: "none", color: "white" }}>{languageData.navbar_home}</Link>
                         </MenuLink>
                         <MenuLink>
-                            <Link to="/menus" style={{ textDecoration: "none", color: "white" }}>Cardápios</Link>
+                            <Link to="/menus" style={{ textDecoration: "none", color: "white" }}>{languageData.navbar_menus}</Link>
                         </MenuLink>
                         {decodedToken?.isAdmin && (
                             <>
                                 <MenuLink>
-                                    <Link to="/users" style={{ textDecoration: "none", color: "white" }}>Usuários</Link>
+                                    <Link to="/users" style={{ textDecoration: "none", color: "white" }}>{languageData.navbar_users}</Link>
                                 </MenuLink>
                             </>
                         )}

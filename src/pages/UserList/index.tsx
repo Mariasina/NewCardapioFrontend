@@ -12,6 +12,7 @@ import { useJwt } from "react-jwt";
 import { DefaultResponse } from "../../types";
 import { AxiosError } from "axios";
 import { JwtPayload } from "../../utils/jwt.utils";
+import { useLanguage } from "../../languageContext/LanguageContext.tsx";
 
 export type UserInfo = {
     username: string,
@@ -27,6 +28,8 @@ function UserList() {
     document.title = "Usuários"
 
     const navigate = useNavigate()
+    const {languageData: lang} = useLanguage()
+
     const token = localStorage.getItem("token")
     const { decodedToken, isExpired } = useJwt<JwtPayload>(token ?? "")
 
@@ -52,7 +55,7 @@ function UserList() {
             }
             setUsers(res.data.users)
         })()
-    });
+    }, []);
 
     
 
@@ -67,9 +70,9 @@ function UserList() {
                             gap: "30px"
                         }
                     }}>
-                        <AnimatedTitle title={"Usuários registrados"} />
+                        <AnimatedTitle title={lang.registered_users} />
                         <Stack flexDirection={"row"} alignItems={"center"} justifyContent={"center"} gap={2}>
-                            <Typography fontFamily={"Marcellus"} fontSize={"1.1rem"}>Adicionar Usuário</Typography>
+                            <Typography fontFamily={"Marcellus"} fontSize={"1.1rem"}>{lang.add_user}</Typography>
                             <Link to={"/register-user"} style={{
                                 textDecoration: "none",
                                 color: "black"

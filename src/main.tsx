@@ -7,11 +7,14 @@ import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider"
 import routes from './routes'
 
 import './index.css'
+import { LanguageProvider } from './languageContext/LanguageContext'
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <LocalizationProvider dateAdapter={AdapterDayjs}>
-      <RouterProvider router={routes}/>
+      <LanguageProvider>
+        <RouterProvider router={routes}/>
+      </LanguageProvider>
     </LocalizationProvider>
   </StrictMode>,
 )

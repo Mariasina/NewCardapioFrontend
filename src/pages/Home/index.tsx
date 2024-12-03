@@ -12,6 +12,8 @@ import { Title, TitleContainer } from "./styles.tsx";
 import gluten from "../../assets/img/GlutenIconGreen.png"
 import animal from "../../assets/img/CowIconGreen.png"
 import meat from "../../assets/img/MeatIconGreen.png"
+import IngredientTooltip from "./components/IngredientTooltip/index.tsx";
+import { useLanguage } from "../../languageContext/LanguageContext.tsx";
 
 export type Menu = {
     date: Date;
@@ -52,6 +54,23 @@ export default function Home() {
 
     const { isExpired } = useJwt<JwtPayload>(token ?? "");
     const navigate = useNavigate();
+
+    const {languageData} = useLanguage()
+
+    const getDishInfos = (ingredients: Ingredient[]) => {
+        let hasGluten = false, isMeat = false, isAnimal = false
+        
+        ingredients.forEach(x => {
+            if (x.hasGluten)
+                hasGluten = true
+            if (x.isAnimal)
+                isMeat = true
+            if (x.isAnimal)
+                isAnimal = true
+        })
+
+        return {hasGluten, isMeat, isAnimal}
+    }
 
     if (isExpired || !token) {
         localStorage.removeItem("token");
@@ -94,7 +113,7 @@ export default function Home() {
                             gap: "30px"
                         }
                     }}>
-                        <AnimatedTitle title={"Cardápio de hoje"} />
+                        <AnimatedTitle title={languageData.todays_menu} />
                     </Stack>
                 </Stack>
                 <Stack flexDirection={"column"} width={"100%"} padding={"30px"}>
@@ -110,16 +129,21 @@ export default function Home() {
                                                 <p>{menuItem.description}</p>
                                                 <Stack>
                                                 {menuItem.dishes.map((dishItem, index) => 
-                                                    <Stack flexDirection={"row"} alignItems={"center"} gap={"5px"}  key={index}>
-                                                        {dishItem.ingredients.map((ingredientItem, index) => 
+                                                    <IngredientTooltip ingredients={dishItem.ingredients}>
+                                                        <Stack flexDirection={"row"} alignItems={"center"} gap={"5px"}  key={index}>
                                                             <Stack key={index}>
-                                                                {ingredientItem.hasGluten ? <img src={gluten}></img> : null}
-                                                                {ingredientItem.isAnimal ? <img src={animal}></img> : null}
-                                                                {ingredientItem.isMeat ? <img src={meat}></img> : null}
+                                                                {(() => {
+                                                                    const {hasGluten, isAnimal, isMeat} = getDishInfos(dishItem.ingredients)
+                                                                    return <>
+                                                                        {hasGluten && <img src={gluten}></img>}
+                                                                        {isAnimal && <img src={animal}></img>}
+                                                                        {isMeat && <img src={meat}></img>}
+                                                                    </>
+                                                                })()}
                                                             </Stack>
-                                                        )}
-                                                        <Typography fontFamily={"Marcellus"} fontSize={"1.1rem"}>{dishItem.name}</Typography>
-                                                    </Stack>
+                                                            <Typography fontFamily={"Marcellus"} fontSize={"1.1rem"}>{dishItem.name}</Typography>
+                                                        </Stack>
+                                                    </IngredientTooltip>
                                                 )}
                                                 </Stack>
                                             </Stack>

@@ -1,0 +1,59 @@
+{
+    "text": [
+        {
+            "name": "todays_menu",
+            "pt": "Cardapio de Hoje",
+            "en": "Today's Menu"   
+        },
+        {
+            "name": "navbar_home",
+            "pt": "Inicio",
+            "en": "Home"   
+        },
+        {
+            "name": "navbar_menus",
+            "pt": "Cardapios",
+            "en": "Menus"   
+        },
+        {
+            "name": "navbar_users",
+            "pt": "Usuarios",
+            "en": "Users"   
+        },
+        {
+            "name": "registered_menus",
+            "pt": "Cardapios Cadastrados",
+            "en": "Registered Menus"   
+        },
+        {
+            "name": "add_menu",
+            "pt": "Criar Cardapio",
+            "en": "Create Menu"   
+        },
+        {
+            "name": "menu",
+            "pt": "Cardapio",
+            "en": "Menu"   
+        },
+        {
+            "name": "registered_users",
+            "pt": "Usuários registrados",
+            "en": "Registered Users"   
+        },
+        {
+            "name": "add_user",
+            "pt": "Adicionar Usuário",
+            "en": "Add User"   
+        },
+        {
+            "name": "create_new_user",
+            "pt": "Adicionar Usuário",
+            "en": "Create new User"   
+        },
+        {
+            "name": "register",
+            "pt": "Cadastrar",
+            "en": "Register"   
+        }
+    ]
+}

@@ -7,11 +7,15 @@ import { api } from "../../api/index.ts";
 import { AxiosError } from "axios";
 import { useJwt } from "react-jwt";
 import { JwtPayload } from "../../utils/jwt.utils";
+import { useLanguage } from "../../languageContext/LanguageContext.tsx";
 
 function RegisterUser() {
-    document.title = "Criar novo usuário"
-
+    
     const navigate = useNavigate()
+    const {languageData: lang} = useLanguage()
+    
+    document.title = lang.create_new_user
+
     const { decodedToken, isExpired } = useJwt<JwtPayload>(localStorage.getItem("token")!)
 
     if (isExpired || !localStorage.getItem("token")) {
@@ -63,7 +67,7 @@ function RegisterUser() {
                         }}
                         zIndex={10}
                     >
-                        <Typography fontFamily={"Marcellus SC"} variant="h2" color="white" mt={5} textAlign={"center"} zIndex={9}>Criar novo usuário</Typography>
+                        <Typography fontFamily={"Marcellus SC"} variant="h2" color="white" mt={5} textAlign={"center"} zIndex={9}>{lang.create_new_user}</Typography>
                         <form onSubmit={handleSubmit}>
                             <Stack width={"100%"} gap={10} mt={15} alignItems={"center"} >
                                 <TextField
@@ -129,7 +133,7 @@ function RegisterUser() {
                                     }}
                                     color="inherit"
                                 >
-                                    <Typography sx={{ textTransform: "capitalize" }} fontFamily={"Marcellus"} variant="h5">Cadastrar</Typography>
+                                    <Typography sx={{ textTransform: "capitalize" }} fontFamily={"Marcellus"} variant="h5">{lang.register}</Typography>
                                 </Button>
                             </Stack>
                         </form>
