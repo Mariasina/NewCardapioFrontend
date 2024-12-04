@@ -1,6 +1,7 @@
 import { Typography } from "@mui/material";
 import { CardBox } from "./styles";
 import { useLanguage } from "../../../../languageContext/LanguageContext";
+import { Link } from "react-router-dom";
 
 
 export default function MenuCard() {
