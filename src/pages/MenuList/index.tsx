@@ -20,6 +20,7 @@ export type MenuInfo = {
 
 type MenuResponseType = {
     message: string,
+    pages: number,
     menus: MenuInfo[]
 }
 
@@ -34,12 +35,17 @@ export default function MenuList() {
     document.title = "Cardápios"
 
     const navigate = useNavigate()
-    const {languageData} = useLanguage()
-
     const token = localStorage.getItem("token")
+
+    const { languageData } = useLanguage()
+
     const { isExpired } = useJwt<JwtPayload>(token ?? "")
 
     const [menus, setMenus] = useState<any[]>([])
+    const [page, setPage] = useState(1)
+    const [totalPages, setTotalPages] = useState(1)
+
+
 
     if (isExpired || !token) {
         localStorage.removeItem("token")
@@ -48,9 +54,10 @@ export default function MenuList() {
 
     useEffect(() => {
         (async () => {
-            const res = await api.get<MenuResponseType>("/menu", getAuth(token)).catch((err: AxiosError<DefaultResponse>) => {
+            const res = await api.get<MenuResponseType>(`/menu?page=${page}&limit=12`, getAuth(token)).catch((err: AxiosError<DefaultResponse>) => {
                 alert(err.response?.data.message)
             })
+
             if (!res) {
                 return
             }
@@ -58,8 +65,9 @@ export default function MenuList() {
             const menus = res.data.menus.map((m) => {return {...m, date: new Date(m.date)}})
 
             setMenus(menus)
+            setTotalPages(res.data.pages)
         })()
-    }, []);
+    }, [page]);
 
     return (
         <>
@@ -108,8 +116,7 @@ export default function MenuList() {
                 </Stack>
             </Stack>
             <Stack alignItems={"center"}>
-
-                <CustomPagination pages={2} />
+                <CustomPagination pages={totalPages} onChange={(page) => setPage(page)}/>
             </Stack>
         </>
     )

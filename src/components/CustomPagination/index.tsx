@@ -1,10 +1,10 @@
 import { Pagination } from "@mui/material";
 
-function CustomPagination({pages}: {pages:number}) {
+function CustomPagination({pages, onChange}: {pages:number, onChange: (page: number) => void}) {
 
     return (
         <>
-            <Pagination count={pages} color="primary" 
+            <Pagination count={pages} onChange={(_, page) => onChange(page)} color="primary" 
                 sx={{
                     position: "fixed",
                     bottom: 10,
