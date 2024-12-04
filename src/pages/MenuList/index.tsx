@@ -106,7 +106,9 @@ export default function MenuList() {
 
                                 <Stack alignItems={"center"} gap={"10px"} key={index}>
                                     <Typography fontFamily={"Marcellus"} fontSize={"1.1rem"}>{formatDate(item.date)}</Typography>
-                                    <MenuCard key={index} />
+                                    <Link to={`/edit-menu/${item.id}`}>
+                                        <MenuCard key={index} />
+                                    </Link>
                                 </Stack>
                             )}
                             

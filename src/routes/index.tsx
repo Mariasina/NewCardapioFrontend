@@ -5,6 +5,7 @@ import MenuList from "../pages/MenuList";
 import RegisterUser from "../pages/RegisterUser";
 import UserList from "../pages/UserList";
 import CreateMenu from "../pages/CreateMenu";
+import EditMenu from "../pages/EditMenu";
 
 const routes = createBrowserRouter([
     {
@@ -30,6 +31,10 @@ const routes = createBrowserRouter([
     {
         path: "/users",
         element: <UserList/>
+    },
+    {
+        path: "/edit-menu/:id",
+        element: <EditMenu/>
     }
 
 ])
