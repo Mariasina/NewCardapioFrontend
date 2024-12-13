@@ -5,7 +5,7 @@ import MenuList from "../pages/MenuList";
 import RegisterUser from "../pages/RegisterUser";
 import UserList from "../pages/UserList";
 import CreateMenu from "../pages/CreateMenu";
-import EditMenu from "../pages/EditMenu";
+import ViewMenu from "../pages/ViewMenu";
 
 const routes = createBrowserRouter([
     {
@@ -33,8 +33,8 @@ const routes = createBrowserRouter([
         element: <UserList/>
     },
     {
-        path: "/edit-menu/:id",
-        element: <EditMenu/>
+        path: "/view-menu/:date",
+        element: <ViewMenu/>
     }
 
 ])

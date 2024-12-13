@@ -1,5 +1,5 @@
 import { useJwt } from "react-jwt";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom"; // Importando useParams
 import { Box, Stack, Typography } from "@mui/material";
 import AnimatedTitle from "../../components/AnimatedTitle";
 import { useEffect, useState } from "react";
@@ -9,12 +9,12 @@ import Navbar from "../../components/Navbar";
 import { JwtPayload } from "../../utils/jwt.utils";
 import { DateTime } from "luxon";
 import { FoodIcon, Title, TitleContainer } from "./styles.tsx";
-import glutenGreen from "../../assets/img/GlutenIconGreen.png"
-import animalGreen from "../../assets/img/CowIconGreen.png"
-import meatGreen from "../../assets/img/MeatIconGreen.png"
-import glutenWhite from "../../assets/img/GlutenIconWhite.png"
-import animalWhite from "../../assets/img/CowIconWhite.png"
-import meatWhite from "../../assets/img/MeatIconWhite.png"
+import glutenGreen from "../../assets/img/GlutenIconGreen.png";
+import animalGreen from "../../assets/img/CowIconGreen.png";
+import meatGreen from "../../assets/img/MeatIconGreen.png";
+import glutenWhite from "../../assets/img/GlutenIconWhite.png";
+import animalWhite from "../../assets/img/CowIconWhite.png";
+import meatWhite from "../../assets/img/MeatIconWhite.png";
 import IngredientTooltip from "./components/IngredientTooltip/index.tsx";
 import { useLanguage } from "../../languageContext/LanguageContext.tsx";
 
@@ -49,8 +49,8 @@ type MenuResponse = {
     menu: Menu;
 };
 
-export default function Home() {
-    document.title = "Home";
+export default function ViewMenu() {
+    document.title = "Cardápio";
 
     const token = localStorage.getItem("token");
     const [menu, setMenu] = useState<Menu | null>(null); // Inicie como null
@@ -58,22 +58,22 @@ export default function Home() {
     const { isExpired } = useJwt<JwtPayload>(token ?? "");
     const navigate = useNavigate();
 
-    const { languageData } = useLanguage()
+    const { languageData } = useLanguage();
+
+    const { date } = useParams<{ date: string }>(); // Pega a data da URL
+    const formattedDate = date?.split("-").reverse().join("-"); // Formata para "yyyy-mm-dd" para a API
 
     const getDishInfos = (ingredients: Ingredient[]) => {
-        let hasGluten = false, isMeat = false, isAnimal = false
+        let hasGluten = false, isMeat = false, isAnimal = false;
 
-        ingredients.forEach(x => {
-            if (x.hasGluten)
-                hasGluten = true
-            if (x.isAnimal)
-                isMeat = true
-            if (x.isAnimal)
-                isAnimal = true
-        })
+        ingredients.forEach((x) => {
+            if (x.hasGluten) hasGluten = true;
+            if (x.isAnimal) isMeat = true;
+            if (x.isAnimal) isAnimal = true;
+        });
 
-        return { hasGluten, isMeat, isAnimal }
-    }
+        return { hasGluten, isMeat, isAnimal };
+    };
 
     if (isExpired || !token) {
         localStorage.removeItem("token");
@@ -83,23 +83,21 @@ export default function Home() {
     useEffect(() => {
         (async () => {
             try {
-                // Obter a data de hoje em UTC no formato 'YYYY-MM-DD'
-                const today = DateTime.now().setZone('America/Sao_Paulo').toISODate();
-                console.log(today)
+                // Usar a data recebida como parâmetro na URL (formattedDate)
+                if (!formattedDate) return;
 
                 // Fazer a requisição para a rota /menuInfo/:date
-                const res = await api.get<MenuResponse>(`/menuInfo/${today}`, getAuth(token));
+                const res = await api.get<MenuResponse>(`/menuInfo/${formattedDate}`, getAuth(token));
 
                 if (res && res.data) {
                     const todayMenu = res.data.menu;
-
                     setMenu(todayMenu); // Ajuste para usar Menu | null com date do tipo Date
                 }
             } catch (err) {
                 console.log("Erro ao buscar o menu:", err);
             }
         })();
-    }, [token]); // Dependência de token
+    }, [token, formattedDate]); // Dependência de formattedDate
 
     // Logar o valor de menu após ser atualizado
     useEffect(() => {
@@ -114,10 +112,10 @@ export default function Home() {
                     <Stack flexDirection={"row"} justifyContent={"space-between"} alignItems={"center"} sx={{
                         "@media screen and (max-width: 425px)": {
                             flexDirection: "column-reverse",
-                            gap: "30px"
+                            gap: "30px",
                         }
                     }}>
-                        <AnimatedTitle title={languageData.todays_menu} />
+                        <AnimatedTitle title={languageData.menu} />
                     </Stack>
                 </Stack>
                 <Stack flexDirection={"column"} width={"100%"} padding={"30px"}>
@@ -137,7 +135,7 @@ export default function Home() {
                                                         <Stack flexDirection={"row"} alignItems={"center"} gap={"5px"} key={index}>
                                                             <Stack flexDirection={"row"} gap={"3px"} key={index} width={"70px"}>
                                                                 {(() => {
-                                                                    const { hasGluten, isAnimal, isMeat } = getDishInfos(dishItem.ingredients)
+                                                                    const { hasGluten, isAnimal, isMeat } = getDishInfos(dishItem.ingredients);
                                                                     return <>
                                                                         {hasGluten && <FoodIcon src={glutenGreen}></FoodIcon>}
                                                                         {isAnimal && <FoodIcon src={animalGreen}></FoodIcon>}
@@ -154,17 +152,14 @@ export default function Home() {
                                     )}
                                 </Stack>
                                 <Stack alignItems={"flex-end"} justifyContent={"space-between"} flexDirection={"row"}>
-
                                     <Box sx={{ backgroundColor: "#115437", border: "7px solid #115437", borderRadius: "0px 30px 0px 0px", width: "200px", display: "flex", justifyContent: "center" }}>
                                         <Typography fontFamily={"Margarine"} fontSize={"1.3rem"} color="white">
-                                            {DateTime.fromJSDate(new Date(menu.date)) 
-                                                .plus({ days: 1 }) 
-                                                .setZone('America/Sao_Paulo') 
+                                            {DateTime.fromJSDate(new Date(menu.date))
+                                                .plus({ days: 1 })
+                                                .setZone('America/Sao_Paulo')
                                                 .toLocaleString()}
                                         </Typography>
                                     </Box>
-
-
                                     <Box sx={{ backgroundColor: "#115437", border: "7px solid #115437", borderRadius: "30px 0px 0px 0px", width: "540px", display: "flex", justifyContent: "space-between", flexWrap: "wrap", padding: "5px 15px" }}>
                                         <Stack gap={"4px"} flexDirection={"row"} alignItems={"center"}>
                                             <FoodIcon src={glutenWhite}></FoodIcon>

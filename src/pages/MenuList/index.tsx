@@ -26,9 +26,11 @@ type MenuResponseType = {
 
 const formatDate = (data: Date) => {
     const dateWithOffset = new Date(data);
-    dateWithOffset.setDate(dateWithOffset.getDate());
-    return dateWithOffset.getDate() + "/" + (dateWithOffset.getMonth() + 1) + "/" + dateWithOffset.getFullYear();
+    dateWithOffset.setDate(dateWithOffset.getDate() + 1);
+
+    return dateWithOffset.getDate() + "-" + (dateWithOffset.getMonth() + 1) + "-" + dateWithOffset.getFullYear();
 };
+
 
 
 export default function MenuList() {
@@ -62,7 +64,7 @@ export default function MenuList() {
                 return
             }
 
-            const menus = res.data.menus.map((m) => {return {...m, date: new Date(m.date)}})
+            const menus = res.data.menus.map((m) => { return { ...m, date: new Date(m.date) } })
 
             setMenus(menus)
             setTotalPages(res.data.pages)
@@ -106,19 +108,20 @@ export default function MenuList() {
 
                                 <Stack alignItems={"center"} gap={"10px"} key={index}>
                                     <Typography fontFamily={"Marcellus"} fontSize={"1.1rem"}>{formatDate(item.date)}</Typography>
-                                    <Link to={`/edit-menu/${item.id}`}>
+                                    <Link to={`/view-menu/${formatDate(item.date)}`}>
                                         <MenuCard key={index} />
                                     </Link>
+
                                 </Stack>
                             )}
-                            
+
 
                         </CardContainer>
                     </Stack>
                 </Stack>
             </Stack>
             <Stack alignItems={"center"}>
-                <CustomPagination pages={totalPages} onChange={(page) => setPage(page)}/>
+                <CustomPagination pages={totalPages} onChange={(page) => setPage(page)} />
             </Stack>
         </>
     )

@@ -2,37 +2,37 @@
     "text": [
         {
             "name": "todays_menu",
-            "pt": "Cardapio de Hoje",
+            "pt": "Cardápio de Hoje",
             "en": "Today's Menu"   
         },
         {
             "name": "navbar_home",
-            "pt": "Inicio",
+            "pt": "Início",
             "en": "Home"   
         },
         {
             "name": "navbar_menus",
-            "pt": "Cardapios",
+            "pt": "Cardápios",
             "en": "Menus"   
         },
         {
             "name": "navbar_users",
-            "pt": "Usuarios",
+            "pt": "Usuários",
             "en": "Users"   
         },
         {
             "name": "registered_menus",
-            "pt": "Cardapios Cadastrados",
+            "pt": "Cardápios Cadastrados",
             "en": "Registered Menus"   
         },
         {
             "name": "add_menu",
-            "pt": "Criar Cardapio",
+            "pt": "Criar Cardápio",
             "en": "Create Menu"   
         },
         {
             "name": "menu",
-            "pt": "Cardapio",
+            "pt": "Cardápio",
             "en": "Menu"   
         },
         {
@@ -92,7 +92,7 @@
         },
         {
             "name": "menu_unavailable",
-            "pt": "Nenhum cardapio encontrado para hoje!!",
+            "pt": "Nenhum cardápio encontrado para hoje!!",
             "en": "No menu found for today!!"   
         }
     ]
